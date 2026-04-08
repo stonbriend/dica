@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>DiCar — 중고차 가치 진단</title>
+<title>DiCar — 차량 진단</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Bebas+Neue&display=swap');
 :root{
@@ -17,12 +17,10 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;}
-
 .header{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;position:sticky;top:0;z-index:100;}
 .logo{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:3px;color:var(--accent);}
 .logo span{color:var(--text);}
 .header-right{margin-left:auto;font-size:12px;color:var(--muted);}
-
 .steps{display:flex;background:var(--white);border-bottom:1px solid var(--border);padding:0 20px;}
 .si{flex:1;text-align:center;padding:10px 0;font-size:11px;color:var(--hint);font-weight:500;position:relative;}
 .si.active{color:var(--accent);}
@@ -33,17 +31,13 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .sd{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin:0 auto 4px;color:var(--hint);}
 .si.active .sd{border-color:var(--accent);color:var(--accent);background:var(--accent-l);}
 .si.done .sd{border-color:var(--green);background:var(--green-l);color:var(--green);}
-
 .page{display:none;padding:20px;animation:fi .25s ease;}
 .page.active{display:block;}
 @keyframes fi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-
 .pt{font-size:20px;font-weight:900;margin-bottom:4px;}
 .ps{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5;}
-
 .card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
 .cl{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;}
-
 .f{margin-bottom:14px;}
 .f:last-child{margin-bottom:0;}
 .f label{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:5px;}
@@ -53,26 +47,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
 
-/* 사고이력 */
-.cg{display:flex;flex-direction:column;gap:8px;}
-.ci{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--border);border-radius:var(--rs);cursor:pointer;transition:all .15s;}
-.ci.sel{border-color:var(--accent);background:var(--accent-l);}
-.ci.dng.sel{border-color:var(--red);background:var(--red-l);}
-.cb{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border2);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-.ci.sel .cb{background:var(--accent);border-color:var(--accent);}
-.ci.dng.sel .cb{background:var(--red);border-color:var(--red);}
-.ck{font-size:10px;color:var(--white);display:none;}
-.ci.sel .ck{display:block;}
-.cn{font-size:13px;font-weight:600;}
-.cd{font-size:11px;color:var(--muted);margin-top:2px;}
-.ca{font-size:12px;font-weight:600;color:var(--red);white-space:nowrap;}
-
 /* 업로드 */
 .ubox{border:2px dashed var(--border2);border-radius:var(--r);padding:24px;text-align:center;cursor:pointer;transition:all .2s;margin-bottom:12px;}
-.ubox:hover{border-color:var(--accent);background:var(--accent-l);}
+.ubox:hover,.ubox:active{border-color:var(--accent);background:var(--accent-l);}
 .ubox.has{border-style:solid;border-color:var(--green);background:var(--green-l);}
 .ui{font-size:28px;margin-bottom:6px;}
-.ut{font-size:14px;font-weight:600;color:var(--text);}
+.ut{font-size:14px;font-weight:600;}
 .us{font-size:12px;color:var(--muted);margin-top:3px;}
 .uf{font-size:12px;color:var(--green);margin-top:4px;font-weight:500;}
 .sdiv{text-align:center;font-size:12px;color:var(--hint);margin:12px 0;position:relative;}
@@ -89,55 +69,61 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .bp{background:var(--accent);color:#fff;}
 .bp:hover{background:#1d4ed8;}
 .bo{background:var(--white);color:var(--muted);border:1px solid var(--border);}
-.ban{background:linear-gradient(135deg,#1a1a18,#2563eb);color:#fff;font-size:16px;letter-spacing:.03em;}
+.ban{background:#1a1a18;color:#fff;font-size:16px;}
 .bsp{height:60px;}
 
 /* 로딩 */
-.lo{position:fixed;inset:0;background:rgba(247,247,245,.95);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;}
+.lo{position:fixed;inset:0;background:rgba(247,247,245,.96);z-index:999;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
 .lo.show{display:flex;}
-.ls{font-size:14px;color:var(--muted);margin-top:16px;text-align:center;}
 .sp{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
+.ls{font-size:14px;color:var(--muted);margin-top:16px;text-align:center;}
 
-/* 결과 */
-.rh{background:linear-gradient(135deg,#1a1a18,#2563eb);border-radius:var(--r);padding:24px 20px;margin-bottom:12px;color:#fff;}
-.rl{font-size:12px;opacity:.7;margin-bottom:6px;}
-.rv{font-size:40px;font-weight:900;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;}
-.ru{font-size:16px;margin-left:4px;opacity:.8;}
-.rr{font-size:13px;opacity:.7;margin-top:4px;}
-.cr{display:flex;align-items:center;gap:8px;margin-top:14px;}
-.cb2{flex:1;height:6px;background:rgba(255,255,255,.2);border-radius:3px;overflow:hidden;}
-.cf{height:100%;background:#fff;border-radius:3px;transition:width .8s ease;}
-.cp{font-size:12px;font-weight:700;}
-.aac{background:linear-gradient(135deg,var(--accent-l),var(--green-l));border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
-.ab{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:8px;}
-.at{font-size:13px;line-height:1.8;white-space:pre-wrap;color:var(--text);}
-.dr{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);}
-.dr:last-child{border-bottom:none;}
-.dn{flex:1;font-size:13px;color:var(--text);}
-.db{font-size:13px;font-weight:600;color:var(--text);}
-.dm{font-size:13px;font-weight:600;color:var(--red);}
-.dp{font-size:13px;font-weight:600;color:var(--green);}
-.er{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.ec{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center;}
-.ef{font-size:22px;margin-bottom:4px;}
-.eco{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;}
-.ep{font-size:20px;font-weight:900;margin:4px 0;}
-.erange{font-size:11px;color:var(--muted);}
-.en{font-size:11px;color:var(--accent);margin-top:4px;}
-.mb{background:var(--amber-l);border:1px solid #fcd34d;border-radius:var(--r);padding:14px;display:flex;gap:12px;align-items:flex-start;margin-bottom:12px;}
-.mi{font-size:22px;}
-.mt{font-size:13px;font-weight:700;margin-bottom:4px;}
-.md{font-size:12px;color:var(--muted);line-height:1.6;}
-.cta{width:100%;padding:16px;background:var(--green);color:#fff;border:none;border-radius:var(--r);font-size:16px;font-weight:700;cursor:pointer;margin-bottom:8px;font-family:'Noto Sans KR',sans-serif;}
-.rst{width:100%;padding:12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-size:13px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+/* 결과 헤더 */
+.rh{background:#1a1a18;border-radius:var(--r);padding:20px;margin-bottom:12px;color:#fff;}
+.rh-car{font-size:13px;opacity:.6;margin-bottom:6px;}
+.rh-title{font-size:18px;font-weight:900;margin-bottom:8px;}
+.rh-score{display:flex;align-items:center;gap:10px;}
+.score-ring{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:900;flex-shrink:0;}
+.score-a{background:#f0fdf4;color:#16a34a;}
+.score-b{background:#fffbeb;color:#d97706;}
+.score-c{background:#fef2f2;color:#dc2626;}
+.score-info{flex:1;}
+.score-label{font-size:12px;opacity:.6;margin-bottom:2px;}
+.score-desc{font-size:13px;font-weight:600;}
+
+/* 심각도 뱃지 */
+.badge{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;white-space:nowrap;}
+.badge-red{background:var(--red-l);color:var(--red);}
+.badge-amber{background:var(--amber-l);color:var(--amber);}
+.badge-green{background:var(--green-l);color:var(--green);}
+.badge-blue{background:var(--accent-l);color:var(--accent);}
+
+/* 진단 항목 */
+.diag-item{padding:12px 0;border-bottom:1px solid var(--border);}
+.diag-item:last-child{border-bottom:none;}
+.diag-head{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.diag-area{font-size:12px;font-weight:700;}
+.diag-body{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:6px;}
+.diag-action{font-size:12px;color:var(--accent);background:var(--accent-l);border-radius:var(--rs);padding:6px 10px;line-height:1.5;}
+
+/* OBD 섹션 */
+.obd-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.obd-row:last-child{border-bottom:none;}
+.obd-code{font-family:monospace;font-size:12px;font-weight:700;color:var(--accent);background:var(--accent-l);padding:3px 8px;border-radius:var(--rs);white-space:nowrap;}
+.obd-desc{font-size:12px;color:var(--text);flex:1;line-height:1.6;}
+
+/* 종합 의견 */
+.summary-card{background:var(--accent-l);border:1px solid #bfdbfe;border-radius:var(--r);padding:16px;margin-bottom:12px;}
+.summary-head{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.06em;margin-bottom:8px;}
+.summary-text{font-size:13px;color:#1e3a5f;line-height:1.8;white-space:pre-wrap;}
 
 /* API 키 */
 .arow{display:flex;gap:8px;}
 .arow input{flex:1;}
 .asave{padding:0 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .ah{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;}
-
+.rst{width:100%;padding:12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-size:13px;cursor:pointer;margin-top:8px;font-family:'Noto Sans KR',sans-serif;}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;z-index:999;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
 </style>
@@ -146,26 +132,26 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
 <div class="header">
   <div class="logo">DI<span>CAR</span></div>
-  <div class="header-right">중고차 가치 진단</div>
+  <div class="header-right">차량 진단</div>
 </div>
 
 <div class="steps">
   <div class="si active" id="si1"><div class="sd">1</div>차량정보</div>
   <div class="si" id="si2"><div class="sd">2</div>자료업로드</div>
-  <div class="si" id="si3"><div class="sd">3</div>AI분석</div>
+  <div class="si" id="si3"><div class="sd">3</div>진단</div>
   <div class="si" id="si4"><div class="sd">4</div>결과</div>
 </div>
 
 <div class="lo" id="lo">
   <div class="sp"></div>
-  <div class="ls" id="lst">차량 정보를 분석하고 있습니다</div>
+  <div class="ls" id="lst">사진을 분석하고 있습니다...</div>
 </div>
 <div class="toast" id="toast"></div>
 
 <!-- PAGE 1: 차량 기본 정보 -->
 <div class="page active" id="page1">
   <div class="pt">차량 기본 정보</div>
-  <div class="ps">차량 정보를 직접 입력해주세요.</div>
+  <div class="ps">진단할 차량 정보를 입력해주세요.<br>정확할수록 진단 품질이 높아집니다.</div>
 
   <div class="card">
     <div class="cl">차량 정보</div>
@@ -202,57 +188,16 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
         </select>
       </div>
       <div class="f">
-        <label>구동</label>
-        <select id="selDrive"><option>FF</option><option>RWD</option><option>AWD</option><option>4WD</option></select>
-      </div>
-    </div>
-    <div class="r2">
-      <div class="f">
         <label>주행거리 (km)</label>
         <input type="number" id="inpMileage" placeholder="50000" inputmode="numeric">
       </div>
-      <div class="f">
-        <label>신차 출고가 (만원)</label>
-        <input type="number" id="inpPrice" placeholder="3200" inputmode="numeric">
-      </div>
     </div>
   </div>
 
   <div class="card">
-    <div class="cl">사고 이력</div>
-    <div class="cg">
-      <div class="ci sel" id="a0" onclick="toggleA(0)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">무사고</div><div class="cd">사고 이력 전혀 없음</div></div>
-        <div style="font-size:12px;font-weight:600;color:var(--green);">+가산</div>
-      </div>
-      <div class="ci" id="a1" onclick="toggleA(1)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">단순 교환 (판금)</div><div class="cd">용접 없는 패널 교환</div></div>
-        <div class="ca">출고가의 3%</div>
-      </div>
-      <div class="ci" id="a2" onclick="toggleA(2)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">골격 수리 (용접)</div><div class="cd">프레임 용접·절단 이력</div></div>
-        <div class="ca">출고가의 15%</div>
-      </div>
-      <div class="ci dng" id="a3" onclick="toggleA(3)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">침수 이력</div><div class="cd">침수 또는 수해 피해</div></div>
-        <div class="ca">출고가의 18%</div>
-      </div>
-      <div class="ci dng" id="a4" onclick="toggleA(4)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">전손 이력</div><div class="cd">보험 전손 처리</div></div>
-        <div class="ca">거래 불가</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="cl">추가 메모 (선택)</div>
+    <div class="cl">알려진 문제 / 메모 (선택)</div>
     <div class="f">
-      <textarea id="inpMemo" rows="3" placeholder="특이사항, 튜닝, 수리 내역 등 자유롭게 입력하세요."></textarea>
+      <textarea id="inpMemo" rows="3" placeholder="평소 이상 증상, 수리 이력, 특이사항 등을 입력하면 더 정확한 진단이 가능합니다.&#10;예) 출발 시 진동, 에어컨 냄새, 브레이크 소음 등"></textarea>
     </div>
   </div>
 
@@ -265,7 +210,7 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 <!-- PAGE 2: 자료 업로드 -->
 <div class="page" id="page2">
   <div class="pt">자료 업로드</div>
-  <div class="ps">차량 사진과 OBD 진단 결과를 올려주세요.<br>없는 자료는 건너뛰어도 됩니다.</div>
+  <div class="ps">사진이 많을수록, OBD 결과가 있을수록<br>진단 정확도가 높아집니다.</div>
 
   <div class="card">
     <div class="cl">차량 사진 (최대 20장)</div>
@@ -273,9 +218,12 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     <div class="ubox" id="pbox" onclick="document.getElementById('photoInput').click()">
       <div class="ui">📷</div>
       <div class="ut">사진 선택</div>
-      <div class="us">갤러리에서 선택 · 최대 20장 · 자동 압축</div>
+      <div class="us">외관·실내·엔진룸·하부 등 · 자동 압축</div>
     </div>
     <div class="pg" id="pgrid"></div>
+    <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;">
+      💡 외관 전체, 각 패널 클로즈업, 엔진룸, 실내, 계기판, 타이어 상태를 찍으면 더 정확합니다.
+    </div>
   </div>
 
   <div class="card">
@@ -284,31 +232,31 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     <div class="ubox" id="obox" onclick="document.getElementById('obdFile').click()">
       <div class="ui">🔌</div>
       <div class="ut">OBD 파일 업로드</div>
-      <div class="us">사진 또는 텍스트 파일</div>
+      <div class="us">진단기 화면 사진 또는 텍스트 파일</div>
       <div class="uf" id="ofn"></div>
     </div>
     <div class="sdiv"><span>또는 직접 입력</span></div>
     <div class="f">
       <textarea id="obdText" rows="5"
-        placeholder="OBD 코드 또는 진단 내용을 여기에 붙여넣으세요.&#10;예) P0301 - 실린더 1 점화 불량&#10;    배터리 전압: 12.4V"></textarea>
+        placeholder="OBD 코드 또는 진단 내용을 여기에 붙여넣으세요.&#10;예) P0301 - 실린더 1 점화 불량&#10;    P0420 - 촉매 효율 저하&#10;    배터리 전압: 12.4V"></textarea>
     </div>
   </div>
 
   <div class="brow">
-    <button class="btn bp" onclick="goTo(3)">다음 — AI 분석 →</button>
+    <button class="btn bp" onclick="goTo(3)">다음 — AI 진단 →</button>
     <button class="btn bo" onclick="goTo(1)">← 차량 정보로</button>
   </div>
   <div class="bsp"></div>
 </div>
 
-<!-- PAGE 3: AI 분석 -->
+<!-- PAGE 3: 진단 실행 -->
 <div class="page" id="page3">
-  <div class="pt">AI 분석</div>
-  <div class="ps">Gemini AI가 자료를 종합해서 차량 가치를 진단합니다.</div>
+  <div class="pt">AI 진단</div>
+  <div class="ps">Gemini AI가 사진과 OBD 데이터를 분석해<br>차량 문제점을 상세히 진단합니다.</div>
 
   <div class="card">
-    <div class="cl">분석 요약</div>
-    <div id="summ" style="font-size:13px;color:var(--muted);line-height:1.8;"></div>
+    <div class="cl">진단 대상 요약</div>
+    <div id="summ" style="font-size:13px;color:var(--muted);line-height:1.9;"></div>
   </div>
 
   <div class="card">
@@ -317,90 +265,86 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
       <input type="password" id="gkey" placeholder="AIza...">
       <button class="asave" onclick="saveKey()">저장</button>
     </div>
-    <div class="ah">키가 없으면 분석 불가. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent);">무료 발급 →</a></div>
+    <div class="ah">키가 없으면 진단 불가. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent);">무료 발급 →</a></div>
   </div>
 
   <div class="brow">
-    <button class="btn ban" onclick="runAnalysis()">✦ Gemini로 분석하기</button>
+    <button class="btn ban" onclick="runAnalysis()">🔍 AI 진단 시작</button>
     <button class="btn bo" onclick="goTo(2)">← 자료 업로드로</button>
   </div>
   <div class="bsp"></div>
 </div>
 
-<!-- PAGE 4: 결과 -->
+<!-- PAGE 4: 진단 결과 -->
 <div class="page" id="page4">
   <div class="pt">진단 결과</div>
   <div class="ps" id="rsub"></div>
 
-  <div class="rh">
-    <div class="rl">내 차 실제 가치</div>
-    <div><span class="rv" id="rval">—</span><span class="ru">만원</span></div>
-    <div class="rr" id="rrng"></div>
-    <div class="cr">
-      <div style="font-size:11px;opacity:.7;">신뢰도</div>
-      <div class="cb2"><div class="cf" id="cfill" style="width:0%"></div></div>
-      <div class="cp" id="cpct">0%</div>
+  <!-- 종합 점수 헤더 -->
+  <div class="rh" id="scoreHeader">
+    <div class="rh-car" id="rCar"></div>
+    <div class="rh-title" id="rTitle"></div>
+    <div class="rh-score">
+      <div class="score-ring" id="scoreRing"></div>
+      <div class="score-info">
+        <div class="score-label">종합 상태</div>
+        <div class="score-desc" id="scoreDesc"></div>
+      </div>
     </div>
   </div>
 
-  <div class="aac" id="acard" style="display:none;">
-    <div class="ab">✦ AI 종합 분석</div>
-    <div class="at" id="atxt"></div>
+  <!-- 종합 소견 -->
+  <div class="summary-card" id="summaryCard" style="display:none;">
+    <div class="summary-head">✦ AI 종합 소견</div>
+    <div class="summary-text" id="summaryText"></div>
   </div>
 
-  <div class="card">
-    <div class="cl">계산 내역</div>
-    <div id="dlist"></div>
+  <!-- 부위별 진단 -->
+  <div class="card" id="diagCard" style="display:none;">
+    <div class="cl">부위별 진단 결과</div>
+    <div id="diagList"></div>
   </div>
 
-  <div class="er" id="erow"></div>
-
-  <div class="mb">
-    <div class="mi">✅</div>
-    <div>
-      <div class="mt">투명한 수수료</div>
-      <div class="md">거래 시 <strong>고정 마진 50만원</strong>만 받습니다.<br>숨겨진 비용 없이 투명하게 거래합니다.</div>
-    </div>
+  <!-- OBD 코드 분석 -->
+  <div class="card" id="obdCard" style="display:none;">
+    <div class="cl">OBD 코드 분석</div>
+    <div id="obdList"></div>
   </div>
 
-  <button class="cta" onclick="showToast('상담 신청이 접수됐습니다.')">📞 상담 신청하기</button>
-  <button class="rst" onclick="resetAll()">↺ 처음부터 다시</button>
+  <!-- 즉시 조치 필요 -->
+  <div class="card" id="urgentCard" style="display:none;">
+    <div class="cl" style="color:var(--red);">⚠ 즉시 조치 필요</div>
+    <div id="urgentList"></div>
+  </div>
+
+  <!-- 권장 정비 -->
+  <div class="card" id="serviceCard" style="display:none;">
+    <div class="cl">권장 정비 항목</div>
+    <div id="serviceList"></div>
+  </div>
+
+  <button class="rst" onclick="resetAll()">↺ 새 차량 진단하기</button>
 
   <div style="font-size:11px;color:var(--hint);text-align:center;margin-top:16px;line-height:1.6;padding-bottom:40px;">
-    ※ 보험개발원 표준감가상각잔존율 기준<br>
-    ※ 본 진단 결과는 참고용이며 실제 거래가와 다를 수 있습니다.
+    ※ AI 진단 결과는 참고용이며 전문 정비사의 확인이 필요합니다.
   </div>
 </div>
 
 <script>
-// ── 상수 ──
-const kidi = {
-  0:100.0, 1:79.4, 2:63.1, 3:50.1, 4:39.8, 5:31.6,
-  6:25.1, 7:20.0, 8:15.9, 9:12.6, 10:10.0,
-  11:9.0, 12:8.0, 13:7.0, 14:6.0, 15:5.0
-};
-const accRates = { 1:0.03, 2:0.15, 3:0.18, 4:0.18 };
-const accLabels = ['','단순 교환','골격 수리','침수 이력','전손 이력'];
+let photos = [], obdB64 = null, curPg = 1;
 
-let photos = [], obdB64 = null, selAcc = new Set([0]), curPg = 1;
-
-// ── 초기화 ──
 function init(){
   const y = document.getElementById('selYear');
   const cy = new Date().getFullYear();
-  y.innerHTML = '<option value="">연식</option>';
-  for(let i = cy; i >= 2000; i--) y.innerHTML += `<option value="${i}">${i}년</option>`;
+  y.innerHTML = '<option value="">연식 선택</option>';
+  for(let i = cy; i >= 2010; i--) y.innerHTML += `<option value="${i}">${i}년</option>`;
   const k = localStorage.getItem('dicar_key');
   if(k) document.getElementById('gkey').value = k;
-  document.getElementById('a0').classList.add('sel');
 }
 
-// ── 페이지 이동 ──
 function goTo(n){
-  if(n === 2){
-    if(!document.getElementById('selBrand').value || !document.getElementById('inpModel').value || !document.getElementById('inpMileage').value){
-      showToast('제조사, 차종, 주행거리를 입력해주세요.'); return;
-    }
+  if(n === 2 && !document.getElementById('inpModel').value && !document.getElementById('selBrand').value){
+    showToast('차종을 입력해주세요.'); return;
   }
   if(n === 3) buildSummary();
   document.getElementById('page'+curPg).classList.remove('active');
@@ -416,39 +360,25 @@ function goTo(n){
   });
 }
 
-// ── 사고이력 ──
-function toggleA(i){
-  const el = document.getElementById('a'+i);
-  if(selAcc.has(i)){ selAcc.delete(i); el.classList.remove('sel'); }
-  else {
-    if(i === 0){ selAcc.clear(); [1,2,3,4].forEach(j => document.getElementById('a'+j).classList.remove('sel')); }
-    else { selAcc.delete(0); document.getElementById('a0').classList.remove('sel'); }
-    selAcc.add(i); el.classList.add('sel');
-  }
-}
-
-// ── 분석 요약 빌드 ──
 function buildSummary(){
   const b = document.getElementById('selBrand').value;
   const m = document.getElementById('inpModel').value;
   const y = document.getElementById('selYear').value;
   const f = document.getElementById('selFuel').value;
   const km = parseInt(document.getElementById('inpMileage').value || 0);
-  const pr = parseInt(document.getElementById('inpPrice').value || 0);
-  const al = ['무사고','단순교환','골격수리','침수이력','전손이력'];
-  const acc = [...selAcc].map(i => al[i]).join(', ');
+  const memo = document.getElementById('inpMemo').value.trim();
+  const obd = document.getElementById('obdText').value.trim();
   let h = '';
-  if(b || m) h += `차량: <b style="color:var(--text);">${b} ${m}</b> ${y ? y+'년식' : ''}<br>`;
-  if(f) h += `연료/구동: <b style="color:var(--text);">${f} / ${document.getElementById('selDrive').value}</b><br>`;
-  if(km) h += `주행거리: <b style="color:var(--text);">${km.toLocaleString()}km</b><br>`;
-  if(pr) h += `출고가: <b style="color:var(--text);">${pr.toLocaleString()}만원</b><br>`;
-  if(acc) h += `사고이력: <b style="color:var(--text);">${acc}</b><br>`;
-  h += photos.length ? `사진: <b style="color:var(--green);">${photos.length}장</b><br>` : `사진: <span style="color:var(--hint);">없음</span><br>`;
-  h += (obdB64 || document.getElementById('obdText').value.trim()) ? `OBD: <b style="color:var(--green);">있음</b>` : `OBD: <span style="color:var(--hint);">없음</span>`;
+  if(b || m) h += `차량: <b style="color:var(--text);">${b} ${m}</b>${y ? ' '+y+'년식' : ''}<br>`;
+  h += `연료: <b style="color:var(--text);">${f}</b>`;
+  if(km) h += ` / 주행: <b style="color:var(--text);">${km.toLocaleString()}km</b>`;
+  h += '<br>';
+  h += photos.length ? `사진: <b style="color:var(--green);">${photos.length}장 준비됨</b><br>` : `사진: <span style="color:var(--hint);">없음 (업로드 권장)</span><br>`;
+  h += (obdB64 || obd) ? `OBD: <b style="color:var(--green);">있음</b><br>` : `OBD: <span style="color:var(--hint);">없음</span><br>`;
+  if(memo) h += `메모: <span style="color:var(--text);">${memo}</span>`;
   document.getElementById('summ').innerHTML = h;
 }
 
-// ── 이미지 압축 ──
 function compressImage(file, maxSize=1280, quality=0.75){
   return new Promise(resolve => {
     const reader = new FileReader();
@@ -458,7 +388,7 @@ function compressImage(file, maxSize=1280, quality=0.75){
         let w = img.width, h = img.height;
         if(w > maxSize || h > maxSize){
           if(w > h){ h = Math.round(h * maxSize / w); w = maxSize; }
-          else { w = Math.round(w * maxSize / h); h = maxSize; }
+          else{ w = Math.round(w * maxSize / h); h = maxSize; }
         }
         const canvas = document.createElement('canvas');
         canvas.width = w; canvas.height = h;
@@ -466,7 +396,7 @@ function compressImage(file, maxSize=1280, quality=0.75){
         const dataUrl = canvas.toDataURL('image/jpeg', quality);
         resolve({ b64: dataUrl.split(',')[1], mime:'image/jpeg', url:dataUrl,
           originalKB: Math.round(file.size/1024),
-          compressedKB: Math.round(dataUrl.length * 0.75 / 1024) });
+          compressedKB: Math.round(dataUrl.length * 0.75/1024) });
       };
       img.src = ev.target.result;
     };
@@ -490,7 +420,7 @@ async function handlePhotos(e){
     document.getElementById('pgrid').appendChild(w);
   }
   document.getElementById('pbox').classList.add('has');
-  showToast(`${files.length}장 압축 완료 (${totalOrig}KB → ${totalComp}KB)`);
+  showToast(`${files.length}장 준비 완료 (${totalOrig}KB → ${totalComp}KB)`);
 }
 
 function delPhoto(i){
@@ -512,7 +442,7 @@ async function handleOBD(e){
     showToast('OBD 이미지 압축 중...');
     const c = await compressImage(f, 1280, 0.8);
     obdB64 = c.b64;
-    showToast(`OBD 압축 완료 (${c.originalKB}KB → ${c.compressedKB}KB)`);
+    showToast(`완료 (${c.originalKB}KB → ${c.compressedKB}KB)`);
   } else {
     const r = new FileReader();
     r.onload = ev => document.getElementById('obdText').value = ev.target.result;
@@ -526,22 +456,33 @@ function saveKey(){
   localStorage.setItem('dicar_key', k); showToast('저장됐습니다.');
 }
 
-// ── JSON 파싱 ──
 function safeParseJSON(raw){
   if(!raw || !raw.trim()) throw new Error('빈 응답');
-  try { return JSON.parse(raw); } catch(e){}
-  const stripped = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
-  try { return JSON.parse(stripped); } catch(e){}
-  const jm = stripped.match(/\{[\s\S]*\}/);
-  if(jm){ try { return JSON.parse(jm[0]); } catch(e){} }
+  // 1차: 직접 파싱
+  try{ return JSON.parse(raw); }catch(e){}
+  // 2차: 마크다운 코드블록 제거
+  const s = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  try{ return JSON.parse(s); }catch(e){}
+  // 3차: { } 블록 추출
+  const jm = s.match(/\{[\s\S]*\}/);
+  if(jm){ try{ return JSON.parse(jm[0]); }catch(e){} }
+  // 4차: 복합 오류 복구 (trailing comma, 따옴표 없는 키, 잘린 배열)
   if(jm){
-    const fixed = jm[0].replace(/,\s*([}\]])/g,'$1').replace(/([{,]\s*)(\w+)\s*:/g,'$1"$2":');
-    try { return JSON.parse(fixed); } catch(e){}
+    let fixed = jm[0]
+      .replace(/,\s*([}\]])/g, '$1')         // trailing comma
+      .replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":') // 따옴표 없는 키
+      .replace(/:\s*'([^']*)'/g, ': "$1"');   // 작은따옴표 값
+    try{ return JSON.parse(fixed); }catch(e){}
+    // 5차: 배열이 잘린 경우 강제 닫기
+    const depth = { brace:0, bracket:0 };
+    for(const c of fixed){ if(c==='{') depth.brace++; else if(c==='}') depth.brace--; else if(c==='[') depth.bracket++; else if(c===']') depth.bracket--; }
+    while(depth.bracket > 0){ fixed += ']'; depth.bracket--; }
+    while(depth.brace > 0){ fixed += '}'; depth.brace--; }
+    try{ return JSON.parse(fixed); }catch(e){}
   }
   throw new Error('응답 파싱 실패. 다시 시도해주세요.');
 }
 
-// ── AI 분석 ──
 async function runAnalysis(){
   const key = document.getElementById('gkey').value.trim() || localStorage.getItem('dicar_key') || '';
   if(!key){ showToast('Gemini API 키를 입력해주세요.'); return; }
@@ -550,146 +491,221 @@ async function runAnalysis(){
   const m = document.getElementById('inpModel').value;
   const y = document.getElementById('selYear').value.replace('년','');
   const f = document.getElementById('selFuel').value;
-  const d = document.getElementById('selDrive').value;
   const km = parseInt(document.getElementById('inpMileage').value || 0);
-  const pr = parseInt(document.getElementById('inpPrice').value || 0);
   const memo = document.getElementById('inpMemo').value.trim();
   const obd = document.getElementById('obdText').value.trim();
-  const al = ['무사고','단순교환(판금)','골격수리(용접)','침수이력','전손이력'];
-  const acc = [...selAcc].map(i => al[i]).join(', ');
 
-  const cy = new Date().getFullYear();
-  const age = Math.max(0, cy - parseInt(y || cy));
-  const br = kidi[age] !== undefined ? kidi[age] : 5.0;
-  const pen = pr > 0 ? Math.min(10, Math.round(Math.max(0, km - age*20000) / 10000 * 10) / 10) : 0;
-  const rate = Math.max(3, Math.round((br - pen) * 10) / 10);
-  const bval = pr > 0 ? Math.round(pr * rate / 100) : 0;
+  if(!photos.length && !obd && !obdB64){
+    showToast('사진 또는 OBD 데이터를 먼저 업로드해주세요.'); return;
+  }
 
-  const prompt = `당신은 중고차 가치 평가 전문가입니다. 아래 차량 정보와 자료를 분석하고 반드시 아래 JSON 형식으로만 응답하세요. JSON 외 다른 텍스트, 설명, 마크다운 코드블록을 절대 포함하지 마세요.
+  const prompt = `[SYSTEM] 당신은 15년 경력의 자동차 전문 진단 기술사입니다. 아래 차량의 사진과 OBD 데이터를 바탕으로 전문가 수준의 차량 상태 진단 리포트를 작성하세요.
 
-【차량 정보】
-- 차량: ${b} ${m} (${y}년식)
-- 연료: ${f} / 구동: ${d}
-- 주행거리: ${km.toLocaleString()}km
-- 출고가: ${pr > 0 ? pr.toLocaleString()+'만원' : '미입력'}
-- 사고이력: ${acc}
-- 보험개발원 잔존율: ${rate}% (${age}년차${pen > 0 ? ', 주행초과 보정 -'+pen+'%' : ''})
-- 보험개발원 기준가: ${bval > 0 ? bval.toLocaleString()+'만원' : '출고가 미입력'}
-${memo ? '- 메모: '+memo : ''}
-${obd ? '\n【OBD 진단】\n'+obd : ''}
+응답 규칙:
+- 반드시 순수 JSON 객체 하나만 출력 (첫 글자 반드시 {)
+- 마크다운, 코드블록(\`\`\`), 설명 텍스트 절대 금지
+- 사진/OBD에서 실제 확인된 사항만 작성 (추측 금지)
+- 발견 내용이 없으면 해당 배열을 [] 로 비워둠
 
-【감가 산출 기준】
-- 추가 감가/가산 금액은 출고가(${pr > 0 ? pr+'만원' : '차급 추정'}) 대비 비율(%)로 계산
-- 단순교환: 출고가의 2~4%, 골격수리: 10~18%, 침수: 15~20%
-- 사진·OBD 분석으로 발견된 항목만 포함
+【진단 대상 차량】
+${b} ${m}${y ? ' ('+y+'년식)' : ''} / 연료: ${f}${km ? ' / 주행: '+km.toLocaleString()+'km' : ''}
+${memo ? '운전자 신고 증상: '+memo : ''}
+${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
 
-반드시 아래 JSON 구조 그대로 응답 (키 이름, 타입 변경 금지):
-{"vehicle_summary":"문자열","condition_analysis":"문자열","obd_findings":null또는문자열,"photo_findings":null또는문자열,"additional_deductions":[{"name":"문자열","amount":-정수,"reason":"문자열"}],"additional_additions":[{"name":"문자열","amount":정수,"reason":"문자열"}],"final_value":정수,"value_min":정수,"value_max":정수,"confidence":0~100정수,"confidence_reason":"문자열","export_libya":{"min":정수,"max":정수,"note":"문자열"},"export_russia":{"min":정수,"max":정수,"note":"문자열"},"recommendation":"문자열"}`;
+【진단 지침】
+1. 사진 각 부위(외관 패널, 엔진룸, 실내, 계기판, 타이어, 하부)를 세밀하게 분석
+2. ${b} ${m} 차종 특유의 고질적 결함 부위(누유, 특정 부품 마모 등)를 사진과 대조
+3. 엔진 오일 캡, 냉각수 등이 보이면 슬러지·오염도로 내부 상태 진단
+4. OBD 코드가 있으면 코드별 의미·원인·위험도 상세 분석
+5. severity는 urgent(즉시 정비)/caution(가까운 시일 내 점검)/good(정상) 중 선택
 
-  const parts = [{text:prompt}];
-  photos.slice(0,20).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
+【JSON 응답 형식 — 모든 키 필수 포함】
+{
+  "overall_grade": "A 또는 B 또는 C",
+  "overall_summary": "차량 전체 상태 종합 소견 (3~5문장, 가장 중요한 발견 포함)",
+  "confidence": 0에서100사이의정수,
+  "inspection_items": [
+    {
+      "area": "점검 부위명",
+      "severity": "urgent 또는 caution 또는 good",
+      "finding": "발견된 상태 또는 문제점 구체적 설명",
+      "action": "권장 조치사항 (정비소 방문, 부품 교체 등 구체적으로)"
+    }
+  ],
+  "obd_codes": [
+    {
+      "code": "P코드 또는 코드명",
+      "description": "코드가 의미하는 내용",
+      "cause": "주요 발생 원인",
+      "severity": "urgent 또는 caution 또는 info"
+    }
+  ],
+  "urgent_actions": ["즉시 처리해야 할 항목들"],
+  "recommended_services": ["가까운 시일 내 권장하는 정비 항목들"]
+}`;
+
+  const parts = [{text: prompt}];
+  photos.slice(0, 20).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
   if(obdB64) parts.push({inline_data:{mime_type:'image/jpeg',data:obdB64}});
 
   const ov = document.getElementById('lo'); ov.classList.add('show');
-  const steps = ['차량 정보 분석 중...','사진 판독 중...','OBD 데이터 해석 중...','가치 산출 중...','수출 예상가 계산 중...'];
+  const steps = ['사진 분석 중...','외관 상태 확인 중...','엔진룸 점검 중...','OBD 코드 해석 중...','진단 리포트 작성 중...'];
   let si = 0;
-  const iv = setInterval(() => { document.getElementById('lst').textContent = steps[Math.min(si++, steps.length-1)]; }, 1800);
+  const iv = setInterval(() => { document.getElementById('lst').textContent = steps[Math.min(si++, steps.length-1)]; }, 2000);
 
-  try {
+  try{
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,{
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{parts}], generationConfig:{ temperature:0.1, maxOutputTokens:3000 } })
+      body: JSON.stringify({ contents:[{parts}], generationConfig:{ temperature:0.1, maxOutputTokens:4000 }})
     });
     const data = await res.json();
     clearInterval(iv); ov.classList.remove('show');
     if(data.error){
       if(data.error.status==='NOT_FOUND'||data.error.code===404)
-        return runWith(key,'gemini-2.0-flash',parts,{b,m,y,km,pr,rate,bval,age,pen,acc});
+        return runWith(key,'gemini-2.0-flash',parts,{b,m,y,km,memo,obd});
       alert('API 오류: '+data.error.message); return;
     }
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     if(!raw) throw new Error('빈 응답. 다시 시도해주세요.');
-    renderResult(safeParseJSON(raw), {b,m,y,km,pr,rate,bval,age,pen,acc});
-  } catch(err){
+    renderResult(safeParseJSON(raw), {b,m,y,km,memo,obd});
+  }catch(err){
     clearInterval(iv); ov.classList.remove('show');
-    alert('분석 오류: '+err.message);
+    alert('진단 오류: '+err.message);
   }
 }
 
 async function runWith(key, model, parts, info){
   const ov = document.getElementById('lo'); ov.classList.add('show');
   document.getElementById('lst').textContent = model+' 로 재시도 중...';
-  try {
+  try{
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,{
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ contents:[{parts}], generationConfig:{ temperature:0.1, maxOutputTokens:3000 } })
+      body: JSON.stringify({ contents:[{parts}], generationConfig:{ temperature:0.1, maxOutputTokens:4000 }})
     });
     const data = await res.json();
     ov.classList.remove('show');
     if(data.error){ alert('API 오류: '+data.error.message); return; }
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     renderResult(safeParseJSON(raw), info);
-  } catch(err){
+  }catch(err){
     ov.classList.remove('show');
-    alert('분석 오류: '+err.message);
+    alert('진단 오류: '+err.message);
   }
 }
 
-// ── 결과 렌더링 ──
 function renderResult(r, i){
-  document.getElementById('rsub').textContent = `${i.b} ${i.m} · ${i.y}년식 · ${i.km.toLocaleString()}km`;
-  document.getElementById('rval').textContent = r.final_value.toLocaleString();
-  document.getElementById('rrng').textContent = `범위: ${r.value_min.toLocaleString()} ~ ${r.value_max.toLocaleString()}만원`;
-  document.getElementById('cfill').style.width = r.confidence+'%';
-  document.getElementById('cpct').textContent = r.confidence+'%';
+  // 헤더
+  document.getElementById('rsub').textContent = `${i.b} ${i.m}${i.y ? ' · '+i.y+'년식' : ''}${i.km ? ' · '+i.km.toLocaleString()+'km' : ''}`;
+  document.getElementById('rCar').textContent = `${i.b} ${i.m}${i.y ? ' '+i.y+'년식' : ''}`;
 
-  let at = r.condition_analysis || '';
-  if(r.obd_findings) at += '\n\n[OBD 진단] '+r.obd_findings;
-  if(r.photo_findings) at += '\n\n[사진 분석] '+r.photo_findings;
-  if(r.recommendation) at += '\n\n[딜러 의견] '+r.recommendation;
-  if(at.trim()){ document.getElementById('atxt').textContent = at.trim(); document.getElementById('acard').style.display='block'; }
+  const grade = (r.overall_grade || 'B').toUpperCase().charAt(0);
+  const gradeMap = {
+    'A':{ cls:'score-a', label:'양호', desc:'전반적으로 상태가 좋습니다.' },
+    'B':{ cls:'score-b', label:'보통', desc:'일부 주의 항목이 있습니다.' },
+    'C':{ cls:'score-c', label:'불량', desc:'즉시 점검이 필요합니다.' }
+  };
+  const gInfo = gradeMap[grade] || gradeMap['B'];
+  const ring = document.getElementById('scoreRing');
+  ring.textContent = grade;
+  ring.className = 'score-ring ' + gInfo.cls;
+  document.getElementById('rTitle').textContent = gInfo.label + ' 상태';
 
-  let h = '';
-  if(i.pr > 0){
-    h += `<div class="dr"><div class="dn">출고가</div><div class="db">${i.pr.toLocaleString()}만원</div></div>`;
-    h += `<div class="dr"><div class="dn"><b>연식 감가 (보험개발원 기준)</b><br><span style="font-size:11px;color:var(--muted);">${i.age}년차 · 잔존율 ${i.rate}%${i.pen>0?' (주행초과 -'+i.pen+'%)':''}</span></div><div class="dm">-${(i.pr-i.bval).toLocaleString()}만원</div></div>`;
+  // overall_summary 첫 문장 추출 (안전하게)
+  const summaryText = r.overall_summary || '';
+  const firstSentence = summaryText.split(/[.!?]/)[0];
+  document.getElementById('scoreDesc').textContent = (firstSentence && firstSentence.trim()) ? firstSentence.trim()+'.' : gInfo.desc;
+
+  // confidence 표시
+  if(r.confidence !== undefined){
+    const conf = parseInt(r.confidence) || 0;
+    document.getElementById('rTitle').textContent = gInfo.label + ' 상태  ·  진단 신뢰도 ' + conf + '%';
   }
-  [...selAcc].forEach(idx => {
-    if(idx === 0){
-      const bonus = i.pr > 0 ? Math.round(i.pr * 0.02) : 30;
-      h += `<div class="dr"><div class="dn"><b>무사고 가산</b></div><div class="dp">+${bonus.toLocaleString()}만원</div></div>`;
-    } else if(idx === 4){
-      h += `<div class="dr"><div class="dn"><b>전손 이력</b></div><div class="dm">거래 불가 수준</div></div>`;
-    } else if(accRates[idx] && i.pr > 0){
-      const amt = Math.round(i.pr * accRates[idx]);
-      h += `<div class="dr"><div class="dn"><b>${accLabels[idx]}</b><br><span style="font-size:11px;">출고가 대비 ${(accRates[idx]*100).toFixed(0)}% 감가</span></div><div class="dm">-${amt.toLocaleString()}만원</div></div>`;
-    }
-  });
-  (r.additional_deductions||[]).forEach(d => h += `<div class="dr"><div class="dn"><b>${d.name}</b>${d.reason?'<br><span style="font-size:11px;color:var(--muted);">'+d.reason+'</span>':''}</div><div class="dm">${d.amount.toLocaleString()}만원</div></div>`);
-  (r.additional_additions||[]).forEach(d => h += `<div class="dr"><div class="dn"><b>${d.name}</b>${d.reason?'<br><span style="font-size:11px;color:var(--muted);">'+d.reason+'</span>':''}</div><div class="dp">+${d.amount.toLocaleString()}만원</div></div>`);
-  h += `<div class="dr" style="border-top:2px solid var(--border);padding-top:12px;margin-top:4px;"><div style="font-weight:900;font-size:14px;">실제 가치</div><div style="font-weight:900;font-size:16px;color:var(--accent);">${r.final_value.toLocaleString()}만원</div></div>`;
-  document.getElementById('dlist').innerHTML = h;
 
-  if(r.export_libya && r.export_russia){
-    document.getElementById('erow').innerHTML = `
-      <div class="ec"><div class="ef">🇱🇾</div><div class="eco">리비아</div><div class="ep">${Math.round((r.export_libya.min+r.export_libya.max)/2).toLocaleString()}만원</div><div class="erange">${r.export_libya.min.toLocaleString()} ~ ${r.export_libya.max.toLocaleString()}</div><div class="en">${r.export_libya.note||''}</div></div>
-      <div class="ec"><div class="ef">🇷🇺</div><div class="eco">러시아</div><div class="ep">${Math.round((r.export_russia.min+r.export_russia.max)/2).toLocaleString()}만원</div><div class="erange">${r.export_russia.min.toLocaleString()} ~ ${r.export_russia.max.toLocaleString()}</div><div class="en">${r.export_russia.note||''}</div></div>`;
+  // 종합 소견
+  if(r.overall_summary){
+    document.getElementById('summaryText').textContent = r.overall_summary;
+    document.getElementById('summaryCard').style.display = 'block';
   }
+
+  // 부위별 진단
+  const items = r.inspection_items || [];
+  if(items.length){
+    const sevMap = {
+      'urgent': { badge:'badge-red', label:'즉시조치' },
+      'caution': { badge:'badge-amber', label:'주의' },
+      'good': { badge:'badge-green', label:'양호' }
+    };
+    // 심각도 순 정렬
+    const order = { urgent:0, caution:1, good:2 };
+    items.sort((a,b) => (order[a.severity]||1) - (order[b.severity]||1));
+
+    let h = '';
+    items.forEach(item => {
+      const sev = sevMap[item.severity] || sevMap['caution'];
+      h += `<div class="diag-item">
+        <div class="diag-head">
+          <span class="diag-area">${item.area}</span>
+          <span class="badge ${sev.badge}">${sev.label}</span>
+        </div>
+        <div class="diag-body">${item.finding}</div>
+        ${item.action ? `<div class="diag-action">→ ${item.action}</div>` : ''}
+      </div>`;
+    });
+    document.getElementById('diagList').innerHTML = h;
+    document.getElementById('diagCard').style.display = 'block';
+  }
+
+  // OBD 코드
+  const codes = r.obd_codes || [];
+  if(codes.length){
+    const sevMap2 = { urgent:'badge-red', caution:'badge-amber', info:'badge-blue' };
+    let h = '';
+    codes.forEach(c => {
+      h += `<div class="obd-row">
+        <span class="obd-code">${c.code}</span>
+        <div class="obd-desc">
+          <div style="font-weight:600;margin-bottom:2px;">${c.description}</div>
+          <div style="color:var(--muted);">${c.cause || ''}</div>
+        </div>
+        <span class="badge ${sevMap2[c.severity]||'badge-amber'}" style="margin-left:4px;">${c.severity==='urgent'?'위험':c.severity==='caution'?'주의':'정보'}</span>
+      </div>`;
+    });
+    document.getElementById('obdList').innerHTML = h;
+    document.getElementById('obdCard').style.display = 'block';
+  }
+
+  // 즉시 조치
+  const urgent = r.urgent_actions || [];
+  if(urgent.length){
+    let h = '<ul style="padding-left:16px;">';
+    urgent.forEach(u => h += `<li style="font-size:13px;padding:4px 0;color:var(--red);">${u}</li>`);
+    h += '</ul>';
+    document.getElementById('urgentList').innerHTML = h;
+    document.getElementById('urgentCard').style.display = 'block';
+  }
+
+  // 권장 정비
+  const services = r.recommended_services || [];
+  if(services.length){
+    let h = '<ul style="padding-left:16px;">';
+    services.forEach(s => h += `<li style="font-size:13px;padding:4px 0;color:var(--text);">${s}</li>`);
+    h += '</ul>';
+    document.getElementById('serviceList').innerHTML = h;
+    document.getElementById('serviceCard').style.display = 'block';
+  }
+
   goTo(4);
 }
 
-// ── 리셋 ──
 function resetAll(){
-  photos = []; obdB64 = null; selAcc = new Set([0]);
-  ['selBrand','inpModel','inpMileage','inpPrice','inpMemo','obdText'].forEach(id => document.getElementById(id).value='');
+  photos = []; obdB64 = null;
+  ['selBrand','inpModel','inpMileage','inpMemo','obdText'].forEach(id => document.getElementById(id).value='');
   document.getElementById('selYear').value = '';
   document.getElementById('pgrid').innerHTML = '';
   document.getElementById('ofn').textContent = '';
   document.getElementById('pbox').classList.remove('has');
   document.getElementById('obox').classList.remove('has');
-  document.getElementById('acard').style.display = 'none';
-  [0,1,2,3,4].forEach(i => document.getElementById('a'+i).classList.remove('sel'));
-  document.getElementById('a0').classList.add('sel');
+  ['summaryCard','diagCard','obdCard','urgentCard','serviceCard'].forEach(id => document.getElementById(id).style.display='none');
   goTo(1);
 }
 
@@ -697,817 +713,6 @@ function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-init();
-</script>
-</body>
-</html>
-.arow input{flex:1;border:none;background:transparent;padding:10px 12px;font-size:12px;font-family:monospace;color:var(--text);outline:none;}
-.asave{padding:0 14px;background:var(--accent);color:#fff;border:none;font-size:12px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;white-space:nowrap;}
-.ah{font-size:11px;color:var(--muted);}
-
-.rh{background:linear-gradient(135deg,#1e40af,#4f46e5);border-radius:var(--r);padding:24px 20px;color:#fff;margin-bottom:12px;text-align:center;}
-.rl{font-size:12px;opacity:.75;margin-bottom:6px;letter-spacing:.05em;text-transform:uppercase;}
-.rv{font-family:'Bebas Neue',sans-serif;font-size:60px;letter-spacing:2px;line-height:1;}
-.ru{font-size:18px;opacity:.8;}
-.rr{font-size:13px;opacity:.65;margin-top:6px;}
-.cr{display:flex;align-items:center;gap:8px;margin-top:14px;}
-.cb2{flex:1;height:4px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;}
-.cf{height:100%;background:#fff;border-radius:2px;transition:width .8s ease;}
-.cp{font-size:12px;opacity:.8;white-space:nowrap;}
-
-.dr{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;gap:8px;}
-.dr:last-child{border-bottom:none;}
-.dn{color:var(--muted);flex:1;line-height:1.5;}
-.dn b{color:var(--text);font-weight:600;display:block;}
-.db{font-weight:700;color:var(--text);white-space:nowrap;}
-.dm{color:var(--red);font-weight:600;white-space:nowrap;}
-.dp{color:var(--green);font-weight:600;white-space:nowrap;}
-
-.er{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;}
-.ec{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:14px;text-align:center;}
-.ef{font-size:26px;margin-bottom:5px;}
-.eco{font-size:11px;color:var(--muted);margin-bottom:4px;font-weight:500;}
-.ep{font-size:18px;font-weight:900;color:var(--green);}
-.erange{font-size:10px;color:var(--hint);margin-top:3px;}
-.en{font-size:10px;color:var(--amber);margin-top:3px;font-weight:500;}
-
-.mb{background:var(--accent-l);border:1px solid #bfdbfe;border-radius:var(--r);padding:14px 16px;display:flex;gap:12px;align-items:center;margin-bottom:12px;}
-.mi{font-size:24px;flex-shrink:0;}
-.mt{font-size:13px;font-weight:700;color:var(--accent);margin-bottom:2px;}
-.md{font-size:12px;color:var(--muted);line-height:1.4;}
-
-.aac{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:12px;}
-.ab{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:#7c3aed;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px;}
-.at{font-size:13px;color:var(--text);line-height:1.7;white-space:pre-wrap;}
-
-.cta{width:100%;padding:17px;background:var(--accent);color:#fff;border:none;border-radius:var(--r);font-size:17px;font-weight:700;font-family:'Noto Sans KR',sans-serif;cursor:pointer;margin-top:4px;}
-.rst{width:100%;padding:13px;background:transparent;border:1px solid var(--border2);border-radius:var(--r);color:var(--muted);font-size:13px;font-family:'Noto Sans KR',sans-serif;cursor:pointer;margin-top:8px;}
-
-.lo{display:none;position:fixed;inset:0;background:rgba(255,255,255,.92);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:16px;}
-.lo.show{display:flex;}
-.sp{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
-@keyframes spin{to{transform:rotate(360deg)}}
-.lt{font-size:14px;font-weight:500;color:var(--muted);}
-.ls{font-size:12px;color:var(--hint);}
-
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--text);color:#fff;border-radius:24px;padding:11px 20px;font-size:13px;font-weight:500;white-space:nowrap;z-index:9999;transition:transform .3s ease;box-shadow:0 4px 20px rgba(0,0,0,.15);}
-.toast.show{transform:translateX(-50%) translateY(0);}
-.bsp{height:40px;}
-
-.sdiv{display:flex;align-items:center;gap:10px;margin:4px 0 12px;}
-.sdiv span{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap;}
-.sdiv::before,.sdiv::after{content:'';flex:1;height:1px;background:var(--border);}
-</style>
-</head>
-<body>
-
-<div class="header">
-  <div class="logo">DI<span>CAR</span></div>
-  <div class="header-right" id="hdr">중고차 가치 진단</div>
-</div>
-
-<div class="steps">
-  <div class="si active" id="s1"><div class="sd">1</div>차량정보</div>
-  <div class="si" id="s2"><div class="sd">2</div>자료업로드</div>
-  <div class="si" id="s3"><div class="sd">3</div>AI분석</div>
-  <div class="si" id="s4"><div class="sd">4</div>결과</div>
-</div>
-
-<div class="lo" id="lo">
-  <div class="sp"></div>
-  <div class="lt">Gemini AI 분석 중...</div>
-  <div class="ls" id="lst">차량 정보를 분석하고 있습니다</div>
-</div>
-<div class="toast" id="toast"></div>
-
-<!-- PAGE 1 -->
-<div class="page active" id="page1">
-  <div class="pt">차량 기본 정보</div>
-  <div class="ps">차량 정보를 입력해주세요.</div>
-
-  <div class="card">
-    <div class="cl">차량 정보</div>
-    <div class="r2">
-      <div class="f">
-        <label>제조사</label>
-        <select id="selBrand" onchange="updateModels()">
-          <option value="">선택</option>
-          <optgroup label="국산">
-            <option>현대</option><option>기아</option><option>제네시스</option>
-            <option>KG모빌리티</option><option>르노코리아</option><option>쉐보레</option>
-          </optgroup>
-          <optgroup label="수입">
-            <option>BMW</option><option>벤츠</option><option>아우디</option>
-            <option>렉서스</option><option>볼보</option><option>포르쉐</option>
-            <option>랜드로버</option><option>테슬라</option><option>기타수입</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="f">
-        <label>연식 <span style="font-size:10px;color:var(--green);">← 먼저 선택하면 차종 필터됨</span></label>
-        <select id="selYear" onchange="onYearChange()"></select>
-      </div>
-    </div>
-    <div class="r2">
-      <div class="f">
-        <label>차종 <span id="modelLoading" style="font-size:10px;color:var(--accent);display:none;">로딩 중...</span></label>
-        <select id="selModel" onchange="loadTrims()"><option value="">제조사·연식 선택 후</option></select>
-      </div>
-      <div class="f">
-        <label>형식 <span id="trimLoading" style="font-size:10px;color:var(--accent);display:none;">로딩 중...</span></label>
-        <select id="selTrim" onchange="applyTrimPrice()">
-          <option value="">차종 선택 후 자동 로드</option>
-        </select>
-      </div>
-    </div>
-    <div class="r3">
-      <div class="f">
-        <label>연료</label>
-        <select id="selFuel">
-          <option>가솔린</option><option>디젤</option><option>하이브리드</option><option>전기</option><option>PHEV</option>
-        </select>
-      </div>
-      <div class="f">
-        <label>구동</label>
-        <select id="selDrive"><option>FF</option><option>RWD</option><option>AWD</option></select>
-      </div>
-      <div class="f"><label>주행거리 (km)</label><input type="number" id="inpMileage" placeholder="예: 50000" inputmode="numeric"></div>
-    </div>
-    <div class="f">
-      <label>출고가 (만원) <span id="priceSource" style="font-size:10px;color:var(--green);"></span></label>
-      <input type="number" id="inpPrice" placeholder="형식 선택 시 자동입력">
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="cl">사고 이력</div>
-    <div class="cg">
-      <div class="ci sel" id="a0" onclick="toggleA(0)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">무사고</div><div class="cd">사고 이력 전혀 없음</div></div>
-        <div style="font-size:12px;font-weight:600;color:var(--green);">+가산</div>
-      </div>
-      <div class="ci" id="a1" onclick="toggleA(1)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">단순 교환 (판금)</div><div class="cd">용접 없는 패널 교환</div></div>
-        <div class="ca">-20~50만</div>
-      </div>
-      <div class="ci" id="a2" onclick="toggleA(2)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">골격 수리 (용접)</div><div class="cd">프레임 용접·절단 이력</div></div>
-        <div class="ca">-150~400만</div>
-      </div>
-      <div class="ci dng" id="a3" onclick="toggleA(3)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">침수 이력</div><div class="cd">침수 또는 수해 피해</div></div>
-        <div class="ca">-200~500만</div>
-      </div>
-      <div class="ci dng" id="a4" onclick="toggleA(4)">
-        <div class="cb"><div class="ck">✓</div></div>
-        <div style="flex:1"><div class="cn">전손 이력</div><div class="cd">보험 전손 처리</div></div>
-        <div class="ca">거래 불가</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="cl">추가 메모 (선택)</div>
-    <div class="f"><textarea id="inpMemo" rows="3" placeholder="특이사항, 튜닝, 수리 내역 등 자유롭게 입력하세요."></textarea></div>
-  </div>
-
-  <div class="brow">
-    <button class="btn bp" onclick="goTo(2)">다음 — 자료 업로드 →</button>
-  </div>
-  <div class="bsp"></div>
-</div>
-
-<!-- PAGE 2 -->
-<div class="page" id="page2">
-  <div class="pt">자료 업로드</div>
-  <div class="ps">차량 사진과 OBD 진단 결과를 올려주세요.<br>없는 자료는 건너뛰어도 됩니다.</div>
-
-  <div class="card">
-    <div class="cl">차량 사진 (최대 6장)</div>
-    <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
-    <div class="ubox" id="pbox" onclick="document.getElementById('photoInput').click()">
-      <div class="ui">📷</div>
-      <div class="ut">사진 선택</div>
-      <div class="us">갤러리에서 선택 · 최대 20장</div>
-    </div>
-    <div class="pg" id="pgrid"></div>
-  </div>
-
-  <div class="card">
-    <div class="cl">OBD 진단 결과</div>
-    <input type="file" id="obdFile" accept="image/*,.txt,.csv" style="display:none" onchange="handleOBD(event)">
-    <div class="ubox" id="obox" onclick="document.getElementById('obdFile').click()">
-      <div class="ui">🔌</div>
-      <div class="ut">OBD 파일 업로드</div>
-      <div class="us">사진 또는 텍스트 파일</div>
-      <div class="uf" id="ofn"></div>
-    </div>
-    <div class="sdiv"><span>또는 직접 입력</span></div>
-    <div class="f">
-      <textarea id="obdText" rows="5"
-        placeholder="OBD 코드 또는 진단 내용을 여기에 붙여넣으세요.&#10;예) P0301 - 실린더 1 점화 불량&#10;    P0420 - 촉매 효율 저하&#10;    배터리 전압: 12.4V"></textarea>
-    </div>
-  </div>
-
-  <div class="brow">
-    <button class="btn bp" onclick="goTo(3)">다음 — AI 분석 →</button>
-    <button class="btn bo" onclick="goTo(1)">← 차량 정보로</button>
-  </div>
-  <div class="bsp"></div>
-</div>
-
-<!-- PAGE 3 -->
-<div class="page" id="page3">
-  <div class="pt">AI 분석</div>
-  <div class="ps">Gemini AI가 자료를 종합해서 차량 가치를 진단합니다.</div>
-
-  <div class="card">
-    <div class="cl">분석 요약</div>
-    <div id="summ" style="font-size:13px;color:var(--muted);line-height:1.8;"></div>
-  </div>
-
-  <div class="card">
-    <div class="cl">Gemini API Key</div>
-    <div class="arow">
-      <input type="password" id="gkey" placeholder="AIza...">
-      <button class="asave" onclick="saveKey()">저장</button>
-    </div>
-    <div class="ah">키가 없으면 분석 불가. <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:var(--accent);">무료 발급 →</a></div>
-  </div>
-
-  <div class="brow">
-    <button class="btn ban" onclick="runAnalysis()">✦ Gemini로 분석하기</button>
-    <button class="btn bo" onclick="goTo(2)">← 자료 업로드로</button>
-  </div>
-  <div class="bsp"></div>
-</div>
-
-<!-- PAGE 4 -->
-<div class="page" id="page4">
-  <div class="pt">진단 결과</div>
-  <div class="ps" id="rsub"></div>
-
-  <div class="rh">
-    <div class="rl">내 차 실제 가치</div>
-    <div><span class="rv" id="rval">—</span><span class="ru">만원</span></div>
-    <div class="rr" id="rrng"></div>
-    <div class="cr">
-      <div style="font-size:11px;opacity:.7;">신뢰도</div>
-      <div class="cb2"><div class="cf" id="cfill" style="width:0%"></div></div>
-      <div class="cp" id="cpct">0%</div>
-    </div>
-  </div>
-
-  <div class="aac" id="acard" style="display:none;">
-    <div class="ab">✦ AI 종합 분석</div>
-    <div class="at" id="atxt"></div>
-  </div>
-
-  <div class="card">
-    <div class="cl">계산 내역</div>
-    <div id="dlist"></div>
-  </div>
-
-  <div class="er" id="erow"></div>
-
-  <div class="mb">
-    <div class="mi">✅</div>
-    <div>
-      <div class="mt">투명한 수수료</div>
-      <div class="md">거래 시 <strong>고정 마진 50만원</strong>만 받습니다.<br>숨겨진 비용 없이 투명하게 거래합니다.</div>
-    </div>
-  </div>
-
-  <button class="cta" onclick="showToast('상담 신청이 접수됐습니다.')">📞 상담 신청하기</button>
-  <button class="rst" onclick="resetAll()">↺ 처음부터 다시</button>
-
-  <div style="font-size:11px;color:var(--hint);text-align:center;margin-top:16px;line-height:1.6;">
-    ※ 보험개발원 표준감가상각잔존율 기준<br>
-    ※ 본 진단 결과는 참고용이며 실제 거래가와 다를 수 있습니다.
-  </div>
-  <div class="bsp"></div>
-</div>
-
-<script>
-// 연식 변경 시 차종 목록 갱신
-function onYearChange() {
-  updateModels();
-}
-
-async function updateModels(){
-  const b = document.getElementById('selBrand').value;
-  const y = document.getElementById('selYear').value.replace('년','');
-  const s = document.getElementById('selModel');
-  const tsel = document.getElementById('selTrim');
-  s.innerHTML = '<option value="">선택</option>';
-  tsel.innerHTML = '<option value="">차종 선택 후 자동 로드</option>';
-  document.getElementById('inpPrice').value = '';
-  document.getElementById('priceSource').textContent = '';
-  if (!b) return;
-
-  // 수입차 → 로컬 목록 (연식 무관)
-  if (mdb[b]) {
-    mdb[b].forEach(m => s.innerHTML += `<option>${m}</option>`);
-    return;
-  }
-
-  // 국산차 → RECENT_CAR_NAMES 즉시 표시 (연식 선택 전)
-  const filter = RECENT_CAR_NAMES[b];
-  if (!y || !filter) {
-    if (filter) filter.forEach(m => s.innerHTML += `<option>${m}</option>`);
-    return;
-  }
-
-  // 연식 선택됨 → car_year_range 테이블에서 해당 연식 차종 조회
-  document.getElementById('modelLoading').style.display = 'inline';
-  try {
-    const yearNum = parseInt(y);
-    // car_year_range에서 해당 연식에 생산된 차종 목록 조회
-    const url = `${SB_URL}/rest/v1/car_year_range?select=car_name&maker=eq.${encodeURIComponent(b)}&year_min=lte.${yearNum}&year_max=gte.${yearNum}&order=car_name`;
-    const res = await fetch(url, {
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Accept': 'application/json' }
-    });
-    const data = await res.json();
-    const dbNames = data.map(r => r.car_name);
-
-    if (dbNames.length > 0) {
-      // RECENT_CAR_NAMES 순서 유지하면서 해당 연식만 표시
-      const dbSet = new Set(dbNames);
-      const filtered = filter.filter(n => dbSet.has(n));
-      if (filtered.length > 0) {
-        filtered.forEach(n => s.innerHTML += `<option>${n}</option>`);
-      } else {
-        // 필터에 없는 차종 그대로 표시
-        dbNames.forEach(n => s.innerHTML += `<option>${n}</option>`);
-      }
-    } else {
-      // car_year_range에 데이터 없으면 전체 목록
-      filter.forEach(m => s.innerHTML += `<option>${m}</option>`);
-    }
-  } catch(e) {
-    if (filter) filter.forEach(m => s.innerHTML += `<option>${m}</option>`);
-  }
-  document.getElementById('modelLoading').style.display = 'none';
-}
-
-async function loadTrims() {
-  const b = document.getElementById('selBrand').value;
-  const m = document.getElementById('selModel').value;
-  const y = document.getElementById('selYear').value.replace('년','');
-  const tsel = document.getElementById('selTrim');
-  tsel.innerHTML = '<option value="">로딩 중...</option>';
-  document.getElementById('inpPrice').value = '';
-  document.getElementById('priceSource').textContent = '';
-
-  if (!b || !m) {
-    tsel.innerHTML = '<option value="">차종을 선택해주세요</option>';
-    return;
-  }
-
-  document.getElementById('trimLoading').style.display = 'inline';
-  try {
-    // 연식 선택 시 해당 연식으로 필터, 없으면 전체
-    let url = `${SB_URL}/rest/v1/vehicle_prices?select=model_code,fuel_type,base_price,model_year&maker=eq.${encodeURIComponent(b)}&car_name=eq.${encodeURIComponent(m)}&order=model_year,base_price&limit=500`;
-    if (y) url += `&model_year=eq.${parseInt(y)}`;
-
-    const res = await fetch(url, {
-      headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Accept': 'application/json' }
-    });
-    let data = await res.json();
-
-    // 연식 필터 결과 없으면 전체 재조회
-    if (Array.isArray(data) && data.length === 0 && y) {
-      const url2 = `${SB_URL}/rest/v1/vehicle_prices?select=model_code,fuel_type,base_price,model_year&maker=eq.${encodeURIComponent(b)}&car_name=eq.${encodeURIComponent(m)}&order=model_year,base_price&limit=500`;
-      const res2 = await fetch(url2, { headers: { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Accept': 'application/json' } });
-      data = await res2.json();
-    }
-
-    if (!Array.isArray(data) || data.length === 0) {
-      tsel.innerHTML = '<option value="">형식 데이터 없음 — 출고가 직접 입력</option>';
-      document.getElementById('trimLoading').style.display = 'none';
-      return;
-    }
-
-    tsel.innerHTML = '<option value="">형식 선택 → 가격 자동 입력</option>';
-    data.forEach(r => {
-      const fuel = r.fuel_type ? ` [${r.fuel_type}]` : '';
-      const yearLabel = r.model_year ? ` (${r.model_year}년)` : '';
-      const price = Math.round(r.base_price / 10000).toLocaleString();
-      tsel.innerHTML += `<option value="${r.base_price}">${r.model_code}${fuel}${yearLabel} — ${price}만원</option>`;
-    });
-
-    if (data.length === 1) { tsel.value = data[0].base_price; applyTrimPrice(); }
-  } catch(e) {
-    tsel.innerHTML = '<option value="">로드 실패 — 출고가 직접 입력</option>';
-  }
-  document.getElementById('trimLoading').style.display = 'none';
-}
-
-// 수입차 로컬 fallback
-const mdb = {
-  'BMW':['3시리즈','5시리즈','7시리즈','X3','X5','X7','M3','M5'],
-  '벤츠':['C클래스','E클래스','S클래스','GLC','GLE','GLS','A클래스','CLA'],
-  '아우디':['A4','A6','A8','Q3','Q5','Q7','Q8','e-tron'],
-  '렉서스':['ES','IS','LS','RX','LX','NX','UX'],
-  '볼보':['XC40','XC60','XC90','S60','S90','V60','V90'],
-  '포르쉐':['카이엔','파나메라','마칸','911','718'],
-  '랜드로버':['레인지로버','디펜더','디스커버리','이보크','벨라'],
-  '테슬라':['Model 3','Model Y','Model S','Model X'],
-  '기타수입':['직접입력'],
-};
-
-const kidi = {
-  0:100.0,  // 당해연도 신차
-  1:79.4,2:63.1,3:50.1,4:39.8,5:31.6,
-  6:25.1,7:20.0,8:15.9,9:12.6,10:10.0,
-  11:9.0,12:8.0,13:7.0,14:6.0,15:5.0
-};
-
-let photos=[], obdB64=null, selAcc=new Set([0]), curPg=1;
-
-function init(){
-  const y=document.getElementById('selYear'), cy=new Date().getFullYear();
-  y.innerHTML='<option value="">연식 선택</option>';
-  for(let i=cy;i>=2010;i--) y.innerHTML+=`<option value="${i}">${i}년</option>`;
-  const k=localStorage.getItem('dicar_key');
-  if(k) document.getElementById('gkey').value=k;
-  document.getElementById('a0').classList.add('sel');
-}
-
-// ── Supabase 설정 ──
-const SB_URL = 'https://pgmezfbhziqsfatbtxla.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBnbWV6ZmJoemlxc2ZhdGJ0eGxhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQzMjg0NTksImV4cCI6MjA4OTkwNDQ1OX0.oABPyC0BZOX9zOiy5iLdm4HqmFwqSJJwIDtts7GMpHA';
-
-async function sbQuery(table, select, filters = {}, order = null) {
-  let url = `${SB_URL}/rest/v1/${table}?select=${encodeURIComponent(select)}`;
-  for (const [col, val] of Object.entries(filters)) {
-    url += `&${col}=eq.${encodeURIComponent(val)}`;
-  }
-  if (order) url += `&order=${encodeURIComponent(order)}`;
-  // 결과 최대 1000개
-  url += '&limit=1000';
-
-  const res = await fetch(url, {
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': `Bearer ${SB_KEY}`,
-      'Accept': 'application/json'
-    }
-  });
-  if (!res.ok) {
-    const err = await res.text();
-    throw new Error(`Supabase 오류 ${res.status}: ${err}`);
-  }
-  return res.json();
-}
-
-// 최신 차종 기준 연도 (이 연도 이후 출시된 형식만 표시)
-// Supabase DB 단독 사용 — domesticFilter 제거로 유지보수 이원화 해소
-const RECENT_CAR_NAMES = {
-  '현대': ['아반떼','쏘나타','쏘나타하이브리드','쏘나타플러그인하이브리드','그랜저','그랜저하이브리드','투싼','투싼하이브리드','싼타페','싼타페하이브리드','팰리세이드','팰리세이드하이브리드','코나','코나일렉트릭','코나하이브리드','코나N','스타리아','스타리아하이브리드','스타리아라운지','스타리아라운지하이브리드','아이오닉5','아이오닉5N','아이오닉6','아이오닉9','넥쏘','벨로스터','벨로스터N','캐스퍼','캐스퍼일렉트릭','베뉴','아반떼N','아반떼하이브리드'],
-  '기아': ['K3','K5','K5플러그인하이브리드','K5하이브리드','K8','K8하이브리드','K9','스포티지','스포티지하이브리드','쏘렌토','쏘렌토하이브리드','모하비','카니발','카니발하이브리드','셀토스','니로','니로플러그인','니로일렉트릭','EV3','EV4','EV6','EV6 GT','EV9','EV9 GT','레이','모닝','K7','K7하이브리드'],
-  '제네시스': ['G70','G70슈팅브레이크','G80','G90','G90LIMOUSINE','GV60','GV70','GV80','GV80쿠페'],
-  'KG모빌리티': ['렉스턴','렉스턴 스포츠','렉스턴 스포츠 칸','토레스','토레스EVX','코란도','티볼리','티볼리 에어'],
-  '르노코리아': ['QM6','QM6 LPe','XM3','SM6','클리오','조에'],
-  '쉐보레': ['트랙스','트레일블레이저','이쿼녹스','콜로라도','타호','말리부','스파크'],
-};
-
-function applyTrimPrice() {
-  const val = document.getElementById('selTrim').value;
-  if (val) {
-    const priceMan = Math.round(parseInt(val) / 10000);
-    document.getElementById('inpPrice').value = priceMan;
-    document.getElementById('priceSource').textContent = '✓ DB 자동입력';
-  }
-}
-
-function toggleA(i){
-  const el=document.getElementById('a'+i);
-  if(selAcc.has(i)){ selAcc.delete(i); el.classList.remove('sel'); }
-  else{
-    if(i===0){ selAcc.clear(); [1,2,3,4].forEach(j=>document.getElementById('a'+j).classList.remove('sel')); }
-    else{ selAcc.delete(0); document.getElementById('a0').classList.remove('sel'); }
-    selAcc.add(i); el.classList.add('sel');
-  }
-}
-
-// 이미지 압축 함수 (Canvas 기반, 최대 1280px, JPEG 0.75)
-function compressImage(file, maxSize=1280, quality=0.75) {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const img = new Image();
-      img.onload = () => {
-        let w = img.width, h = img.height;
-        if (w > maxSize || h > maxSize) {
-          if (w > h) { h = Math.round(h * maxSize / w); w = maxSize; }
-          else       { w = Math.round(w * maxSize / h); h = maxSize; }
-        }
-        const canvas = document.createElement('canvas');
-        canvas.width = w; canvas.height = h;
-        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-        const originalKB = Math.round(file.size / 1024);
-        const compressedKB = Math.round(dataUrl.length * 0.75 / 1024);
-        resolve({ b64: dataUrl.split(',')[1], mime: 'image/jpeg', url: dataUrl, originalKB, compressedKB });
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-async function handlePhotos(e){
-  const files = Array.from(e.target.files).slice(0, 20);
-  photos = []; document.getElementById('pgrid').innerHTML = '';
-  if (!files.length) return;
-
-  showToast('사진 압축 중...');
-  let totalOrig = 0, totalComp = 0;
-
-  for (const f of files) {
-    const compressed = await compressImage(f);
-    totalOrig += compressed.originalKB;
-    totalComp += compressed.compressedKB;
-    photos.push(compressed);
-    const idx = photos.length - 1;
-    const w = document.createElement('div'); w.className = 'ptw';
-    w.innerHTML = `<img src="${compressed.url}" class="pt2"><div class="pdel" onclick="delPhoto(${idx})">✕</div>`;
-    document.getElementById('pgrid').appendChild(w);
-  }
-  document.getElementById('pbox').classList.add('has');
-  showToast(`${files.length}장 압축 완료 (${totalOrig}KB → ${totalComp}KB)`);
-}
-
-function delPhoto(i){ photos.splice(i,1); document.getElementById('pgrid').innerHTML=''; photos.forEach((p,j)=>{ const w=document.createElement('div');w.className='ptw';w.innerHTML=`<img src="${p.url}" class="pt2"><div class="pdel" onclick="delPhoto(${j})">✕</div>`;document.getElementById('pgrid').appendChild(w);}); }
-
-async function handleOBD(e){
-  const f=e.target.files[0]; if(!f) return;
-  document.getElementById('ofn').textContent=f.name;
-  document.getElementById('obox').classList.add('has');
-  if(f.type.startsWith('image/')){
-    // OBD 이미지도 동일하게 압축 적용
-    showToast('OBD 이미지 압축 중...');
-    const compressed = await compressImage(f, 1280, 0.8);
-    obdB64 = compressed.b64;
-    showToast(`OBD 압축 완료 (${compressed.originalKB}KB → ${compressed.compressedKB}KB)`);
-  } else {
-    const r=new FileReader(); r.onload=ev=>document.getElementById('obdText').value=ev.target.result; r.readAsText(f);
-  }
-}
-
-function saveKey(){
-  const k=document.getElementById('gkey').value.trim();
-  if(!k){showToast('API 키를 입력해주세요.');return;}
-  localStorage.setItem('dicar_key',k); showToast('저장됐습니다.');
-}
-
-function goTo(n){
-  if(n===2){
-    if(!document.getElementById('selBrand').value||!document.getElementById('selModel').value||!document.getElementById('inpMileage').value){
-      showToast('제조사, 차종, 주행거리를 입력해주세요.'); return;
-    }
-  }
-  if(n===3) buildSummary();
-  document.getElementById('page'+curPg).classList.remove('active');
-  curPg=n;
-  document.getElementById('page'+n).classList.add('active');
-  updateSteps(); window.scrollTo(0,0);
-}
-
-function updateSteps(){
-  for(let i=1;i<=4;i++){
-    const e=document.getElementById('s'+i);
-    e.className='si';
-    if(i<curPg) e.classList.add('done');
-    else if(i===curPg) e.classList.add('active');
-  }
-  const lbl=['','차량정보','자료업로드','AI분석','결과'];
-  document.getElementById('hdr').textContent=lbl[curPg]+' '+curPg+'/4';
-}
-
-function buildSummary(){
-  const b=document.getElementById('selBrand').value, m=document.getElementById('selModel').value;
-  const y=document.getElementById('selYear').value, f=document.getElementById('selFuel').value;
-  const km=parseInt(document.getElementById('inpMileage').value||0);
-  const pr=document.getElementById('inpPrice').value;
-  const al=['무사고','단순교환','골격수리','침수이력','전손이력'];
-  const acc=[...selAcc].map(i=>al[i]).join(', ');
-  let h=`<span style="color:var(--text);font-weight:500;">${b} ${m}</span> · ${y} · ${f}<br>`;
-  h+=`주행거리: <b style="color:var(--text);">${km.toLocaleString()}km</b><br>`;
-  if(pr) h+=`출고가: <b style="color:var(--text);">${parseInt(pr).toLocaleString()}만원</b><br>`;
-  h+=`사고이력: <b style="color:var(--text);">${acc}</b><br>`;
-  h+=`사진: <b style="color:var(--text);">${photos.length}장</b>`;
-  const ot=document.getElementById('obdText').value.trim();
-  if(ot||obdB64) h+=' · OBD 데이터 있음';
-  document.getElementById('summ').innerHTML=h;
-}
-
-async function runAnalysis(){
-  const key=document.getElementById('gkey').value.trim()||localStorage.getItem('dicar_key')||'';
-  if(!key){showToast('Gemini API 키를 입력해주세요.');return;}
-
-  const b=document.getElementById('selBrand').value, m=document.getElementById('selModel').value;
-  const y=document.getElementById('selYear').value.replace('년','');
-  const f=document.getElementById('selFuel').value, d=document.getElementById('selDrive').value;
-  const km=parseInt(document.getElementById('inpMileage').value||0);
-  const pr=parseInt(document.getElementById('inpPrice').value||0);
-  const memo=document.getElementById('inpMemo').value.trim();
-  const obd=document.getElementById('obdText').value.trim();
-  const al=['무사고','단순교환(판금)','골격수리(용접)','침수이력','전손이력'];
-  const acc=[...selAcc].map(i=>al[i]).join(', ');
-
-  // 연식 계산: 당해연도 신차는 age=0 (잔존율 100%), 1년 지나면 age=1
-  const cy=new Date().getFullYear(), age=Math.max(0,cy-parseInt(y));
-  const br=kidi[age]!==undefined?kidi[age]:(age>15?5.0:79.4);
-  const exp2=age*20000, exc=Math.max(0,km-exp2);
-  const pen=Math.min(10,Math.round(exc/10000*10)/10);
-  const rate=Math.max(3,Math.round((br-pen)*10)/10);
-  const bval=pr>0?Math.round(pr*rate/100):0;
-
-  const prompt=`당신은 중고차 가치 평가 전문가입니다. 아래 차량 정보와 자료를 분석하고 반드시 아래 JSON 형식으로만 응답하세요. JSON 외 다른 텍스트, 설명, 마크다운 코드블록(\`\`\`)을 절대 포함하지 마세요.
-
-【차량 정보】
-- 차량: ${b} ${m} (${y}년식)
-- 연료: ${f} / 구동: ${d}
-- 주행거리: ${km.toLocaleString()}km
-- 출고가: ${pr>0?pr.toLocaleString()+'만원':'미입력'}
-- 사고이력: ${acc}
-- 보험개발원 잔존율: ${rate}% (${age}년차${pen>0?', 주행초과 보정 -'+pen+'%':''})
-- 보험개발원 기준가: ${bval>0?bval.toLocaleString()+'만원':'출고가 미입력'}
-${memo?'- 메모: '+memo:''}
-${obd?'\n【OBD 진단】\n'+obd:''}
-
-【감가 산출 기준】
-- 추가 감가/가산 금액은 출고가(${pr>0?pr+'만원':'차급 추정'}) 대비 비율(%)로 계산
-- 단순교환: 출고가의 2~4%, 골격수리: 10~18%, 침수: 15~20%
-- 사진·OBD 분석으로 발견된 항목만 포함
-
-반드시 아래 JSON 구조 그대로 응답 (키 이름, 타입 변경 금지):
-{"vehicle_summary":"문자열","condition_analysis":"문자열","obd_findings":null또는문자열,"photo_findings":null또는문자열,"additional_deductions":[{"name":"문자열","amount":-정수,"reason":"문자열"}],"additional_additions":[{"name":"문자열","amount":정수,"reason":"문자열"}],"final_value":정수,"value_min":정수,"value_max":정수,"confidence":0~100정수,"confidence_reason":"문자열","export_libya":{"min":정수,"max":정수,"note":"문자열"},"export_russia":{"min":정수,"max":정수,"note":"문자열"},"recommendation":"문자열"}`;
-
-  // 사진 최대 20장 전송
-  const parts=[{text:prompt}];
-  photos.slice(0,20).forEach(p=>parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
-  if(obdB64) parts.push({inline_data:{mime_type:'image/jpeg',data:obdB64}});
-
-  const ov=document.getElementById('lo'); ov.classList.add('show');
-  const steps=['차량 정보 분석 중...','사진 판독 중...','OBD 데이터 해석 중...','가치 산출 중...','수출 예상가 계산 중...'];
-  let si2=0;
-  const iv=setInterval(()=>{ document.getElementById('lst').textContent=steps[Math.min(si2++,steps.length-1)]; },1800);
-
-  try{
-// JSON 파싱 강화 함수 — 불완전한 JSON도 최대한 복구
-function safeParseJSON(raw) {
-  if (!raw || !raw.trim()) throw new Error('빈 응답');
-
-  // 1차: 직접 파싱
-  try { return JSON.parse(raw); } catch(e) {}
-
-  // 2차: 마크다운 코드블록 제거 후 파싱
-  const stripped = raw.replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
-  try { return JSON.parse(stripped); } catch(e) {}
-
-  // 3차: { } 사이 추출 후 파싱
-  const jm = stripped.match(/\{[\s\S]*\}/);
-  if (jm) { try { return JSON.parse(jm[0]); } catch(e) {} }
-
-  // 4차: 배열 오류 복구 시도 (trailing comma, 불완전 배열 등)
-  if (jm) {
-    const fixed = jm[0]
-      .replace(/,\s*([}\]])/g, '$1')      // trailing comma 제거
-      .replace(/([{,]\s*)(\w+)\s*:/g, '$1"$2":'); // 따옴표 없는 키 수정
-    try { return JSON.parse(fixed); } catch(e) {}
-  }
-
-  throw new Error('JSON 파싱 실패: Gemini 응답이 올바른 형식이 아닙니다. 다시 시도해주세요.');
-}
-
-    // gemini-2.5-flash 호출 — responseMimeType 제거 (배열 파싱 오류 원인)
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts}],
-        generationConfig:{
-          temperature:0.1,
-          maxOutputTokens:3000
-        }
-      })
-    });
-    const data=await res.json();
-    clearInterval(iv); ov.classList.remove('show');
-    if(data.error){
-      if(data.error.status==='NOT_FOUND'||data.error.code===404){
-        return runAnalysisWith(key,'gemini-2.0-flash',parts,{b,m,y,km,pr,rate,bval,age,pen,acc});
-      }
-      alert('API 오류: '+data.error.message); return;
-    }
-    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    if(!raw) throw new Error('Gemini 응답이 비어있습니다. 다시 시도해주세요.');
-    const result = safeParseJSON(raw);
-    renderResult(result,{b,m,y,km,pr,rate,bval,age,pen,acc});
-  }catch(err){
-    clearInterval(iv); ov.classList.remove('show');
-    alert('분석 오류: '+err.message);
-  }
-}
-
-// 모델 폴백 함수
-async function runAnalysisWith(key, model, parts, info){
-  const ov=document.getElementById('lo'); ov.classList.add('show');
-  document.getElementById('lst').textContent=`${model} 로 재시도 중...`;
-  try{
-    const res=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        contents:[{parts}],
-        generationConfig:{temperature:0.1,maxOutputTokens:3000}
-      })
-    });
-    const data=await res.json();
-    ov.classList.remove('show');
-    if(data.error){alert('API 오류: '+data.error.message);return;}
-    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const result = safeParseJSON(raw);
-    renderResult(result,info);
-  }catch(err){
-    ov.classList.remove('show');
-    alert('분석 오류: '+err.message);
-  }
-}
-
-function renderResult(r,i){
-  document.getElementById('rsub').textContent=`${i.b} ${i.m} · ${i.y}년식 · ${i.km.toLocaleString()}km`;
-  document.getElementById('rval').textContent=r.final_value.toLocaleString();
-  document.getElementById('rrng').textContent=`범위: ${r.value_min.toLocaleString()} ~ ${r.value_max.toLocaleString()}만원`;
-  document.getElementById('cfill').style.width=r.confidence+'%';
-  document.getElementById('cpct').textContent=r.confidence+'%';
-
-  let at=r.condition_analysis||'';
-  if(r.obd_findings) at+='\n\n[OBD 진단] '+r.obd_findings;
-  if(r.photo_findings) at+='\n\n[사진 분석] '+r.photo_findings;
-  if(r.recommendation) at+='\n\n[딜러 의견] '+r.recommendation;
-  if(at.trim()){document.getElementById('atxt').textContent=at.trim();document.getElementById('acard').style.display='block';}
-
-  let h='';
-  if(i.pr>0){
-    h+=`<div class="dr"><div class="dn">출고가</div><div class="db">${i.pr.toLocaleString()}만원</div></div>`;
-    h+=`<div class="dr"><div class="dn"><b>연식 감가 (보험개발원 기준)</b>${i.age}년차 · 잔존율 ${i.rate}%${i.pen>0?' (주행초과 -'+i.pen+'%)':''}</div><div class="dm">-${(i.pr-i.bval).toLocaleString()}만원</div></div>`;
-  }
-  // 사고이력 감가 — 출고가 대비 % 방식
-  const accRates = { 1: 0.03, 2: 0.15, 3: 0.18, 4: 0.18 }; // 출고가 대비 비율
-  const accLabels = ['','단순 교환','골격 수리','침수 이력','전손 이력'];
-  [...selAcc].forEach(idx => {
-    if (idx === 0) {
-      h += `<div class="dr"><div class="dn"><b>무사고 가산</b></div><div class="dp">+${i.pr > 0 ? Math.round(i.pr * 0.02).toLocaleString() : '약 30'}만원</div></div>`;
-    } else if (idx === 4) {
-      h += `<div class="dr"><div class="dn"><b>전손 이력</b></div><div class="dm">거래 불가 수준</div></div>`;
-    } else if (accRates[idx] && i.pr > 0) {
-      const deductAmt = Math.round(i.pr * accRates[idx]);
-      h += `<div class="dr"><div class="dn"><b>${accLabels[idx]}</b><br><span style="font-size:11px;">출고가 대비 ${(accRates[idx]*100).toFixed(0)}% 감가</span></div><div class="dm">-${deductAmt.toLocaleString()}만원</div></div>`;
-    } else if (accRates[idx]) {
-      const fixedAmt = { 1: 35, 2: 275, 3: 350 };
-      h += `<div class="dr"><div class="dn"><b>${accLabels[idx]}</b></div><div class="dm">-${fixedAmt[idx]}만원 (참고)</div></div>`;
-    }
-  });
-  (r.additional_deductions||[]).forEach(d=>h+=`<div class="dr"><div class="dn"><b>${d.name}</b>${d.reason?'<br><span style="font-size:11px;">'+d.reason+'</span>':''}</div><div class="dm">${d.amount.toLocaleString()}만원</div></div>`);
-  (r.additional_additions||[]).forEach(d=>h+=`<div class="dr"><div class="dn"><b>${d.name}</b>${d.reason?'<br><span style="font-size:11px;">'+d.reason+'</span>':''}</div><div class="dp">+${d.amount.toLocaleString()}만원</div></div>`);
-  h+=`<div class="dr" style="border-top:2px solid var(--border);padding-top:12px;margin-top:4px;"><div style="font-weight:900;font-size:14px;">실제 가치</div><div style="font-weight:900;font-size:16px;color:var(--accent);">${r.final_value.toLocaleString()}만원</div></div>`;
-  document.getElementById('dlist').innerHTML=h;
-
-  document.getElementById('erow').innerHTML=`
-    <div class="ec"><div class="ef">🇱🇾</div><div class="eco">리비아</div><div class="ep">${Math.round((r.export_libya.min+r.export_libya.max)/2).toLocaleString()}만원</div><div class="erange">${r.export_libya.min.toLocaleString()} ~ ${r.export_libya.max.toLocaleString()}</div><div class="en">${r.export_libya.note||''}</div></div>
-    <div class="ec"><div class="ef">🇷🇺</div><div class="eco">러시아</div><div class="ep">${Math.round((r.export_russia.min+r.export_russia.max)/2).toLocaleString()}만원</div><div class="erange">${r.export_russia.min.toLocaleString()} ~ ${r.export_russia.max.toLocaleString()}</div><div class="en">${r.export_russia.note||''}</div></div>`;
-
-  goTo(4);
-}
-
-function resetAll(){
-  photos=[]; obdB64=null; selAcc=new Set([0]);
-  ['selBrand','inpMileage','inpPrice','inpMemo','obdText'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('selYear').value='';
-  document.getElementById('selModel').innerHTML='<option value="">제조사·연식 선택 후</option>';
-  document.getElementById('selTrim').innerHTML='<option value="">차종 선택 후 자동 로드</option>';
-  document.getElementById('priceSource').textContent='';
-  document.getElementById('pgrid').innerHTML='';
-  document.getElementById('ofn').textContent='';
-  document.getElementById('pbox').classList.remove('has');
-  document.getElementById('obox').classList.remove('has');
-  [0,1,2,3,4].forEach(i=>{document.getElementById('a'+i).classList.remove('sel');});
-  document.getElementById('a0').classList.add('sel');
-  goTo(1);
-}
-
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
 }
 
 init();
