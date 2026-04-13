@@ -124,6 +124,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .asave{padding:0 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .ah{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;}
 .rst{width:100%;padding:12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-size:13px;cursor:pointer;margin-top:8px;font-family:'Noto Sans KR',sans-serif;}
+.chip-group{display:flex;flex-wrap:wrap;gap:7px;}
+.chip-label{width:100%;font-size:11px;color:var(--muted);font-weight:500;}
+.chip{padding:8px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--text);background:var(--white);cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s;-webkit-tap-highlight-color:transparent;}
+.chip:active{transform:scale(.96);}
+.chip.sel{background:var(--accent-l);border-color:var(--accent);color:var(--accent);font-weight:700;}
+.year-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.yr-btn{padding:8px 4px;border:1.5px solid var(--border);border-radius:var(--rs);font-size:13px;color:var(--text);background:var(--white);cursor:pointer;text-align:center;font-family:'Noto Sans KR',sans-serif;transition:all .15s;}
+.yr-btn:active{transform:scale(.96);}
+.yr-btn.sel{background:var(--accent-l);border-color:var(--accent);color:var(--accent);font-weight:700;}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#1a1a18;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;z-index:999;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;}
 </style>
@@ -151,53 +160,88 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 <!-- PAGE 1: 차량 기본 정보 -->
 <div class="page active" id="page1">
   <div class="pt">차량 기본 정보</div>
-  <div class="ps">진단할 차량 정보를 입력해주세요.<br>정확할수록 진단 품질이 높아집니다.</div>
+  <div class="ps">탭으로 선택하고, 차종만 직접 입력하세요.</div>
 
+  <!-- 제조사 -->
   <div class="card">
-    <div class="cl">차량 정보</div>
-    <div class="r2">
-      <div class="f">
-        <label>제조사</label>
-        <select id="selBrand">
-          <option value="">선택</option>
-          <optgroup label="국산">
-            <option>현대</option><option>기아</option><option>제네시스</option>
-            <option>KG모빌리티</option><option>르노코리아</option><option>쉐보레</option>
-          </optgroup>
-          <optgroup label="수입">
-            <option>BMW</option><option>벤츠</option><option>아우디</option>
-            <option>렉서스</option><option>볼보</option><option>포르쉐</option>
-            <option>랜드로버</option><option>테슬라</option><option>기타수입</option>
-          </optgroup>
-        </select>
-      </div>
-      <div class="f">
-        <label>차종</label>
-        <input type="text" id="inpModel" placeholder="예: 아반떼, K5, G80">
-      </div>
-    </div>
-    <div class="r3">
-      <div class="f">
-        <label>연식</label>
-        <select id="selYear"></select>
-      </div>
-      <div class="f">
-        <label>연료</label>
-        <select id="selFuel">
-          <option>가솔린</option><option>디젤</option><option>하이브리드</option><option>전기</option><option>PHEV</option><option>LPG</option>
-        </select>
-      </div>
-      <div class="f">
-        <label>주행거리 (km)</label>
-        <input type="number" id="inpMileage" placeholder="50000" inputmode="numeric">
-      </div>
+    <div class="cl">제조사</div>
+    <div class="chip-group" id="brandChips">
+      <div class="chip-label">국산</div>
+      <button class="chip" onclick="selChip('brand',this,'현대')">현대</button>
+      <button class="chip" onclick="selChip('brand',this,'기아')">기아</button>
+      <button class="chip" onclick="selChip('brand',this,'제네시스')">제네시스</button>
+      <button class="chip" onclick="selChip('brand',this,'KG모빌리티')">KG모빌리티</button>
+      <button class="chip" onclick="selChip('brand',this,'르노코리아')">르노코리아</button>
+      <button class="chip" onclick="selChip('brand',this,'쉐보레')">쉐보레</button>
+      <div class="chip-label" style="margin-top:8px;">수입</div>
+      <button class="chip" onclick="selChip('brand',this,'BMW')">BMW</button>
+      <button class="chip" onclick="selChip('brand',this,'벤츠')">벤츠</button>
+      <button class="chip" onclick="selChip('brand',this,'아우디')">아우디</button>
+      <button class="chip" onclick="selChip('brand',this,'렉서스')">렉서스</button>
+      <button class="chip" onclick="selChip('brand',this,'볼보')">볼보</button>
+      <button class="chip" onclick="selChip('brand',this,'포르쉐')">포르쉐</button>
+      <button class="chip" onclick="selChip('brand',this,'랜드로버')">랜드로버</button>
+      <button class="chip" onclick="selChip('brand',this,'테슬라')">테슬라</button>
+      <button class="chip" onclick="selChip('brand',this,'기타수입')">기타수입</button>
     </div>
   </div>
 
+  <!-- 차종 -->
   <div class="card">
-    <div class="cl">알려진 문제 / 메모 (선택)</div>
-    <div class="f">
-      <textarea id="inpMemo" rows="3" placeholder="평소 이상 증상, 수리 이력, 특이사항 등을 입력하면 더 정확한 진단이 가능합니다.&#10;예) 출발 시 진동, 에어컨 냄새, 브레이크 소음 등"></textarea>
+    <div class="cl">차종 <span style="font-weight:400;color:var(--muted);">직접 입력</span></div>
+    <div class="f" style="margin-bottom:0;">
+      <input type="text" id="inpModel" placeholder="예: 아반떼, K5, G80, 5시리즈" oninput="updateInfoSummary()">
+    </div>
+  </div>
+
+  <!-- 연식 -->
+  <div class="card">
+    <div class="cl">연식</div>
+    <div class="year-grid" id="yearGrid"></div>
+    <!-- 숨겨진 input (기존 코드 호환) -->
+    <input type="hidden" id="selYear">
+  </div>
+
+  <!-- 연료 + 주행거리 -->
+  <div class="card">
+    <div class="cl">연료</div>
+    <div class="chip-group" id="fuelChips">
+      <button class="chip" onclick="selChip('fuel',this,'가솔린')">가솔린</button>
+      <button class="chip" onclick="selChip('fuel',this,'디젤')">디젤</button>
+      <button class="chip" onclick="selChip('fuel',this,'하이브리드')">하이브리드</button>
+      <button class="chip" onclick="selChip('fuel',this,'전기')">전기</button>
+      <button class="chip" onclick="selChip('fuel',this,'LPG')">LPG</button>
+      <button class="chip" onclick="selChip('fuel',this,'PHEV')">PHEV</button>
+    </div>
+
+    <div class="cl" style="margin-top:16px;">주행거리</div>
+    <div class="chip-group" id="kmChips">
+      <button class="chip" onclick="selKmChip(this,'10000')">1만km 미만</button>
+      <button class="chip" onclick="selKmChip(this,'30000')">3만km</button>
+      <button class="chip" onclick="selKmChip(this,'50000')">5만km</button>
+      <button class="chip" onclick="selKmChip(this,'80000')">8만km</button>
+      <button class="chip" onclick="selKmChip(this,'100000')">10만km</button>
+      <button class="chip" onclick="selKmChip(this,'150000')">15만km 이상</button>
+      <button class="chip" onclick="selKmChip(this,'direct')">직접 입력</button>
+    </div>
+    <div id="kmDirectWrap" style="display:none;margin-top:10px;">
+      <input type="number" id="inpMileage" placeholder="주행거리 km 직접 입력" inputmode="numeric" oninput="updateInfoSummary()">
+    </div>
+    <!-- 숨겨진 km 값 저장용 -->
+    <input type="hidden" id="kmValue">
+  </div>
+
+  <!-- 선택 요약 -->
+  <div class="card" id="infoSummaryCard" style="display:none;">
+    <div class="cl">입력 확인</div>
+    <div id="infoSummaryText" style="font-size:13px;line-height:1.9;color:var(--muted);"></div>
+  </div>
+
+  <!-- 메모 -->
+  <div class="card">
+    <div class="cl">증상 메모 (선택)</div>
+    <div class="f" style="margin-bottom:0;">
+      <textarea id="inpMemo" rows="3" placeholder="평소 이상 증상, 수리 이력 등을 입력하면 더 정확한 진단이 가능합니다.&#10;예) 출발 시 진동, 에어컨 냄새, 브레이크 소음 등"></textarea>
     </div>
   </div>
 
@@ -213,14 +257,22 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   <div class="ps">사진이 많을수록, OBD 결과가 있을수록<br>진단 정확도가 높아집니다.</div>
 
   <div class="card">
-    <div class="cl">차량 사진 (최대 20장)</div>
+    <div class="cl" style="display:flex;align-items:center;justify-content:space-between;">
+      <span>차량 사진</span>
+      <span id="photoCount" style="font-size:12px;color:var(--accent);font-weight:700;display:none;">0 / 20장</span>
+    </div>
     <input type="file" id="photoInput" accept="image/*" multiple style="display:none" onchange="handlePhotos(event)">
     <div class="ubox" id="pbox" onclick="document.getElementById('photoInput').click()">
       <div class="ui">📷</div>
-      <div class="ut">사진 선택</div>
+      <div class="ut" id="pboxTitle">사진 선택</div>
       <div class="us">외관·실내·엔진룸·하부 등 · 자동 압축</div>
     </div>
     <div class="pg" id="pgrid"></div>
+    <div id="photoAddBtn" style="display:none;margin-top:8px;">
+      <button onclick="document.getElementById('photoInput').click()" style="width:100%;padding:10px;background:var(--accent-l);color:var(--accent);border:1px dashed var(--accent);border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">
+        + 사진 추가 선택
+      </button>
+    </div>
     <div style="font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;">
       💡 외관 전체, 각 패널 클로즈업, 엔진룸, 실내, 계기판, 타이어 상태를 찍으면 더 정확합니다.
     </div>
@@ -332,18 +384,79 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 
 <script>
 let photos = [], obdB64 = null, curPg = 1;
+const chipState = { brand:'', fuel:'' };
+let kmChipVal = '';
 
 function init(){
-  const y = document.getElementById('selYear');
+  // 연식 그리드 생성
+  const yg = document.getElementById('yearGrid');
   const cy = new Date().getFullYear();
-  y.innerHTML = '<option value="">연식 선택</option>';
-  for(let i = cy; i >= 2010; i--) y.innerHTML += `<option value="${i}">${i}년</option>`;
+  for(let i = cy; i >= 2010; i--){
+    const b = document.createElement('button');
+    b.className = 'yr-btn';
+    b.textContent = i+'년';
+    b.onclick = () => {
+      yg.querySelectorAll('.yr-btn').forEach(x => x.classList.remove('sel'));
+      b.classList.add('sel');
+      document.getElementById('selYear').value = i+'';
+      updateInfoSummary();
+    };
+    yg.appendChild(b);
+  }
   const k = localStorage.getItem('dicar_key');
   if(k) document.getElementById('gkey').value = k;
 }
 
+function selChip(type, el, val){
+  const group = el.closest('.chip-group');
+  group.querySelectorAll('.chip').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+  chipState[type] = val;
+  updateInfoSummary();
+}
+
+function selKmChip(el, val){
+  document.querySelectorAll('#kmChips .chip').forEach(x => x.classList.remove('sel'));
+  el.classList.add('sel');
+  const wrap = document.getElementById('kmDirectWrap');
+  if(val === 'direct'){
+    wrap.style.display = 'block';
+    kmChipVal = '';
+  } else {
+    wrap.style.display = 'none';
+    document.getElementById('kmValue').value = val;
+    kmChipVal = val;
+    updateInfoSummary();
+  }
+}
+
+function updateInfoSummary(){
+  const b = chipState.brand;
+  const m = document.getElementById('inpModel').value.trim();
+  const y = document.getElementById('selYear').value;
+  const f = chipState.fuel;
+  const kmDirect = document.getElementById('inpMileage') ? document.getElementById('inpMileage').value : '';
+  const km = kmDirect || kmChipVal;
+
+  const parts = [];
+  if(b) parts.push(`<b>${b}</b>`);
+  if(m) parts.push(`<b>${m}</b>`);
+  if(y) parts.push(`<b>${y}년식</b>`);
+  if(f) parts.push(f);
+  if(km) parts.push(`주행 <b>${parseInt(km).toLocaleString()}km</b>`);
+
+  const card = document.getElementById('infoSummaryCard');
+  const text = document.getElementById('infoSummaryText');
+  if(parts.length){
+    card.style.display = 'block';
+    text.innerHTML = parts.join(' &nbsp;·&nbsp; ');
+  } else {
+    card.style.display = 'none';
+  }
+}
+
 function goTo(n){
-  if(n === 2 && !document.getElementById('inpModel').value && !document.getElementById('selBrand').value){
+  if(n === 2 && !document.getElementById('inpModel').value && !chipState.brand){
     showToast('차종을 입력해주세요.'); return;
   }
   if(n === 3) buildSummary();
@@ -361,16 +474,17 @@ function goTo(n){
 }
 
 function buildSummary(){
-  const b = document.getElementById('selBrand').value;
+  const b = chipState.brand;
   const m = document.getElementById('inpModel').value;
   const y = document.getElementById('selYear').value;
-  const f = document.getElementById('selFuel').value;
-  const km = parseInt(document.getElementById('inpMileage').value || 0);
+  const f = chipState.fuel;
+  const kmDirect = document.getElementById('inpMileage').value;
+  const km = parseInt(kmDirect || kmChipVal || 0);
   const memo = document.getElementById('inpMemo').value.trim();
   const obd = document.getElementById('obdText').value.trim();
   let h = '';
   if(b || m) h += `차량: <b style="color:var(--text);">${b} ${m}</b>${y ? ' '+y+'년식' : ''}<br>`;
-  h += `연료: <b style="color:var(--text);">${f}</b>`;
+  h += `연료: <b style="color:var(--text);">${f || '미선택'}</b>`;
   if(km) h += ` / 주행: <b style="color:var(--text);">${km.toLocaleString()}km</b>`;
   h += '<br>';
   h += photos.length ? `사진: <b style="color:var(--green);">${photos.length}장 준비됨</b><br>` : `사진: <span style="color:var(--hint);">없음 (업로드 권장)</span><br>`;
@@ -379,7 +493,7 @@ function buildSummary(){
   document.getElementById('summ').innerHTML = h;
 }
 
-function compressImage(file, maxSize=1280, quality=0.75){
+function compressImage(file, maxSize=1024, quality=0.70){
   return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = ev => {
@@ -405,33 +519,63 @@ function compressImage(file, maxSize=1280, quality=0.75){
 }
 
 async function handlePhotos(e){
-  const files = Array.from(e.target.files).slice(0, 20);
-  photos = []; document.getElementById('pgrid').innerHTML = '';
-  if(!files.length) return;
+  const newFiles = Array.from(e.target.files);
+  if(!newFiles.length) return;
+
+  const remaining = 20 - photos.length;
+  if(remaining <= 0){ showToast('이미 20장이 업로드됐습니다.'); return; }
+
+  const files = newFiles.slice(0, remaining);
+  if(newFiles.length > remaining) showToast(`20장 제한으로 ${files.length}장만 추가됩니다.`);
+
   showToast('사진 압축 중...');
-  let totalOrig = 0, totalComp = 0;
+  let addedOrig = 0, addedComp = 0;
+
   for(const f of files){
     const c = await compressImage(f);
-    totalOrig += c.originalKB; totalComp += c.compressedKB;
+    addedOrig += c.originalKB; addedComp += c.compressedKB;
     photos.push(c);
-    const idx = photos.length - 1;
-    const w = document.createElement('div'); w.className = 'ptw';
-    w.innerHTML = `<img src="${c.url}" class="pt2"><div class="pdel" onclick="delPhoto(${idx})">✕</div>`;
-    document.getElementById('pgrid').appendChild(w);
   }
-  document.getElementById('pbox').classList.add('has');
-  showToast(`${files.length}장 준비 완료 (${totalOrig}KB → ${totalComp}KB)`);
+
+  // input 초기화 (같은 파일 재선택 허용)
+  e.target.value = '';
+
+  renderPhotoGrid();
+  showToast(`${files.length}장 추가 (${addedOrig}KB → ${addedComp}KB) · 총 ${photos.length}장`);
+}
+
+function renderPhotoGrid(){
+  const grid = document.getElementById('pgrid');
+  grid.innerHTML = '';
+  photos.forEach((p, j) => {
+    const w = document.createElement('div'); w.className = 'ptw';
+    w.innerHTML = `<img src="${p.url}" class="pt2"><div class="pdel" onclick="delPhoto(${j})">✕</div>`;
+    grid.appendChild(w);
+  });
+
+  const count = photos.length;
+  const countEl = document.getElementById('photoCount');
+  const addBtn = document.getElementById('photoAddBtn');
+  const pbox = document.getElementById('pbox');
+  const title = document.getElementById('pboxTitle');
+
+  if(count > 0){
+    countEl.textContent = `${count} / 20장`;
+    countEl.style.display = 'inline';
+    addBtn.style.display = count < 20 ? 'block' : 'none';
+    pbox.classList.add('has');
+    title.textContent = count < 20 ? `${count}장 업로드됨 · 탭해서 더 추가` : `20장 업로드 완료`;
+  } else {
+    countEl.style.display = 'none';
+    addBtn.style.display = 'none';
+    pbox.classList.remove('has');
+    title.textContent = '사진 선택';
+  }
 }
 
 function delPhoto(i){
   photos.splice(i, 1);
-  document.getElementById('pgrid').innerHTML = '';
-  photos.forEach((p, j) => {
-    const w = document.createElement('div'); w.className = 'ptw';
-    w.innerHTML = `<img src="${p.url}" class="pt2"><div class="pdel" onclick="delPhoto(${j})">✕</div>`;
-    document.getElementById('pgrid').appendChild(w);
-  });
-  if(!photos.length) document.getElementById('pbox').classList.remove('has');
+  renderPhotoGrid();
 }
 
 async function handleOBD(e){
@@ -440,7 +584,7 @@ async function handleOBD(e){
   document.getElementById('obox').classList.add('has');
   if(f.type.startsWith('image/')){
     showToast('OBD 이미지 압축 중...');
-    const c = await compressImage(f, 1280, 0.8);
+    const c = await compressImage(f, 1024, 0.75);
     obdB64 = c.b64;
     showToast(`완료 (${c.originalKB}KB → ${c.compressedKB}KB)`);
   } else {
@@ -487,11 +631,12 @@ async function runAnalysis(){
   const key = document.getElementById('gkey').value.trim() || localStorage.getItem('dicar_key') || '';
   if(!key){ showToast('Gemini API 키를 입력해주세요.'); return; }
 
-  const b = document.getElementById('selBrand').value;
+  const b = chipState.brand;
   const m = document.getElementById('inpModel').value;
-  const y = document.getElementById('selYear').value.replace('년','');
-  const f = document.getElementById('selFuel').value;
-  const km = parseInt(document.getElementById('inpMileage').value || 0);
+  const y = document.getElementById('selYear').value;
+  const f = chipState.fuel || '미선택';
+  const kmDirect = document.getElementById('inpMileage').value;
+  const km = parseInt(kmDirect || kmChipVal || 0);
   const memo = document.getElementById('inpMemo').value.trim();
   const obd = document.getElementById('obdText').value.trim();
 
@@ -545,7 +690,7 @@ ${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
 }`;
 
   const parts = [{text: prompt}];
-  photos.slice(0, 20).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
+  photos.slice(0, 15).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
   if(obdB64) parts.push({inline_data:{mime_type:'image/jpeg',data:obdB64}});
 
   const ov = document.getElementById('lo'); ov.classList.add('show');
@@ -554,7 +699,7 @@ ${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
   const iv = setInterval(() => { document.getElementById('lst').textContent = steps[Math.min(si++, steps.length-1)]; }, 2000);
 
   try{
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,{
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${key}`,{
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({ contents:[{parts}], generationConfig:{ temperature:0.1, maxOutputTokens:4000 }})
     });
@@ -562,7 +707,7 @@ ${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
     clearInterval(iv); ov.classList.remove('show');
     if(data.error){
       if(data.error.status==='NOT_FOUND'||data.error.code===404)
-        return runWith(key,'gemini-2.0-flash',parts,{b,m,y,km,memo,obd});
+        return runWith(key,'gemini-1.5-flash',parts,{b,m,y,km,memo,obd});
       alert('API 오류: '+data.error.message); return;
     }
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
@@ -698,13 +843,21 @@ function renderResult(r, i){
 }
 
 function resetAll(){
-  photos = []; obdB64 = null;
-  ['selBrand','inpModel','inpMileage','inpMemo','obdText'].forEach(id => document.getElementById(id).value='');
+  photos = []; obdB64 = null; kmChipVal = '';
+  chipState.brand = ''; chipState.fuel = '';
+  ['inpModel','inpMileage','inpMemo','obdText'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('selYear').value = '';
+  // 칩 선택 초기화
+  document.querySelectorAll('.chip.sel, .yr-btn.sel').forEach(el => el.classList.remove('sel'));
+  document.getElementById('kmDirectWrap').style.display = 'none';
+  document.getElementById('infoSummaryCard').style.display = 'none';
   document.getElementById('pgrid').innerHTML = '';
   document.getElementById('ofn').textContent = '';
   document.getElementById('pbox').classList.remove('has');
   document.getElementById('obox').classList.remove('has');
+  document.getElementById('photoCount').style.display = 'none';
+  document.getElementById('photoAddBtn').style.display = 'none';
+  document.getElementById('pboxTitle').textContent = '사진 선택';
   ['summaryCard','diagCard','obdCard','urgentCard','serviceCard'].forEach(id => document.getElementById(id).style.display='none');
   goTo(1);
 }
