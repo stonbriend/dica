@@ -456,8 +456,14 @@ function updateInfoSummary(){
 }
 
 function goTo(n){
-  if(n === 2 && !document.getElementById('inpModel').value && !chipState.brand){
-    showToast('차종을 입력해주세요.'); return;
+  if(n === 2){
+    const model = document.getElementById('inpModel').value.trim();
+    if(!model){
+      showToast('차종을 입력해주세요. (예: 아반떼, K5)'); return;
+    }
+    if(!chipState.brand){
+      showToast('제조사를 선택해주세요.'); return;
+    }
   }
   if(n === 3) buildSummary();
   document.getElementById('page'+curPg).classList.remove('active');
@@ -690,7 +696,7 @@ ${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
 }`;
 
   const parts = [{text: prompt}];
-  photos.slice(0, 15).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
+  photos.slice(0, 20).forEach(p => parts.push({inline_data:{mime_type:p.mime,data:p.b64}}));
   if(obdB64) parts.push({inline_data:{mime_type:'image/jpeg',data:obdB64}});
 
   const ov = document.getElementById('lo'); ov.classList.add('show');
@@ -847,7 +853,8 @@ function resetAll(){
   chipState.brand = ''; chipState.fuel = '';
   ['inpModel','inpMileage','inpMemo','obdText'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('selYear').value = '';
-  // 칩 선택 초기화
+  document.getElementById('kmValue').value = '';
+  // 칩·연식 선택 초기화
   document.querySelectorAll('.chip.sel, .yr-btn.sel').forEach(el => el.classList.remove('sel'));
   document.getElementById('kmDirectWrap').style.display = 'none';
   document.getElementById('infoSummaryCard').style.display = 'none';
