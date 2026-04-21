@@ -124,6 +124,25 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
 .asave{padding:0 16px;background:var(--accent);color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;white-space:nowrap;}
 .ah{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.6;}
 .rst{width:100%;padding:12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:var(--r);font-size:13px;cursor:pointer;margin-top:8px;font-family:'Noto Sans KR',sans-serif;}
+/* 공유 버튼 */
+.share-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px;}
+.share-btn{padding:12px 6px;border:1px solid var(--border);border-radius:var(--r);background:var(--white);cursor:pointer;text-align:center;font-family:'Noto Sans KR',sans-serif;transition:all .15s;}
+.share-btn:active{transform:scale(.97);}
+.share-btn .sbi{font-size:20px;display:block;margin-bottom:4px;}
+.share-btn .sbl{font-size:11px;font-weight:600;color:var(--muted);}
+.share-btn.kakao{border-color:#FEE500;background:#FEE500;}
+.share-btn.kakao .sbl{color:#3C1E1E;}
+.share-btn.pdf{border-color:#dc2626;background:#fef2f2;}
+.share-btn.pdf .sbl{color:#dc2626;}
+.share-btn.copy{border-color:var(--accent);background:var(--accent-l);}
+.share-btn.copy .sbl{color:var(--accent);}
+@media print{
+  .header,.steps,.brow,.bsp,.rst,.share-row,#page1,#page2,#page3{display:none!important;}
+  .page{display:block!important;}
+  #page4{padding:0;}
+  .rh{background:#1a1a18!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{max-width:100%;}
+}
 .chip-group{display:flex;flex-wrap:wrap;gap:7px;}
 .chip-label{width:100%;font-size:11px;color:var(--muted);font-weight:500;}
 .chip{padding:8px 14px;border:1.5px solid var(--border);border-radius:20px;font-size:13px;color:var(--text);background:var(--white);cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:all .15s;-webkit-tap-highlight-color:transparent;}
@@ -324,6 +343,15 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
     <button class="btn ban" onclick="runAnalysis()">🔍 AI 진단 시작</button>
     <button class="btn bo" onclick="goTo(2)">← 자료 업로드로</button>
   </div>
+
+  <!-- 에러 카드 -->
+  <div id="errorCard" style="display:none;background:#fef2f2;border:1px solid #fca5a5;border-radius:var(--r);padding:16px;margin-top:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <span id="errorTitle" style="font-size:14px;font-weight:700;color:#dc2626;"></span>
+      <button onclick="hideErrorCard()" style="background:none;border:none;font-size:18px;cursor:pointer;color:#dc2626;padding:0;line-height:1;">×</button>
+    </div>
+    <div id="errorMsg" style="font-size:13px;color:#7f1d1d;line-height:1.7;white-space:pre-line;"></div>
+  </div>
   <div class="bsp"></div>
 </div>
 
@@ -373,6 +401,22 @@ body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text
   <div class="card" id="serviceCard" style="display:none;">
     <div class="cl">권장 정비 항목</div>
     <div id="serviceList"></div>
+  </div>
+
+  <!-- 공유 버튼 -->
+  <div class="share-row">
+    <button class="share-btn kakao" onclick="shareKakao()">
+      <span class="sbi">💬</span>
+      <span class="sbl">카카오톡</span>
+    </button>
+    <button class="share-btn pdf" onclick="savePDF()">
+      <span class="sbi">📄</span>
+      <span class="sbl">PDF 저장</span>
+    </button>
+    <button class="share-btn copy" onclick="copyResult()">
+      <span class="sbi">📋</span>
+      <span class="sbl">텍스트 복사</span>
+    </button>
   </div>
 
   <button class="rst" onclick="resetAll()">↺ 새 차량 진단하기</button>
@@ -430,19 +474,29 @@ function selKmChip(el, val){
   }
 }
 
+// 사용자 입력 XSS 이스케이프
+function esc(str){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
 function updateInfoSummary(){
   const b = chipState.brand;
-  const m = document.getElementById('inpModel').value.trim();
+  const m = esc(document.getElementById('inpModel').value.trim());
   const y = document.getElementById('selYear').value;
   const f = chipState.fuel;
   const kmDirect = document.getElementById('inpMileage') ? document.getElementById('inpMileage').value : '';
   const km = kmDirect || kmChipVal;
 
   const parts = [];
-  if(b) parts.push(`<b>${b}</b>`);
+  if(b) parts.push(`<b>${esc(b)}</b>`);
   if(m) parts.push(`<b>${m}</b>`);
-  if(y) parts.push(`<b>${y}년식</b>`);
-  if(f) parts.push(f);
+  if(y) parts.push(`<b>${esc(y)}년식</b>`);
+  if(f) parts.push(esc(f));
   if(km) parts.push(`주행 <b>${parseInt(km).toLocaleString()}km</b>`);
 
   const card = document.getElementById('infoSummaryCard');
@@ -465,6 +519,7 @@ function goTo(n){
       showToast('제조사를 선택해주세요.'); return;
     }
   }
+  hideErrorCard();
   if(n === 3) buildSummary();
   document.getElementById('page'+curPg).classList.remove('active');
   curPg = n;
@@ -489,13 +544,13 @@ function buildSummary(){
   const memo = document.getElementById('inpMemo').value.trim();
   const obd = document.getElementById('obdText').value.trim();
   let h = '';
-  if(b || m) h += `차량: <b style="color:var(--text);">${b} ${m}</b>${y ? ' '+y+'년식' : ''}<br>`;
-  h += `연료: <b style="color:var(--text);">${f || '미선택'}</b>`;
+  if(b || m) h += `차량: <b style="color:var(--text);">${esc(b)} ${esc(m)}</b>${y ? ' '+esc(y)+'년식' : ''}<br>`;
+  h += `연료: <b style="color:var(--text);">${esc(f || '미선택')}</b>`;
   if(km) h += ` / 주행: <b style="color:var(--text);">${km.toLocaleString()}km</b>`;
   h += '<br>';
   h += photos.length ? `사진: <b style="color:var(--green);">${photos.length}장 준비됨</b><br>` : `사진: <span style="color:var(--hint);">없음 (업로드 권장)</span><br>`;
   h += (obdB64 || obd) ? `OBD: <b style="color:var(--green);">있음</b><br>` : `OBD: <span style="color:var(--hint);">없음</span><br>`;
-  if(memo) h += `메모: <span style="color:var(--text);">${memo}</span>`;
+  if(memo) h += `메모: <span style="color:var(--text);">${esc(memo)}</span>`;
   document.getElementById('summ').innerHTML = h;
 }
 
@@ -712,16 +767,28 @@ ${obd ? '\n[OBD 진단 데이터]\n'+obd : ''}
     const data = await res.json();
     clearInterval(iv); ov.classList.remove('show');
     if(data.error){
-      if(data.error.status==='NOT_FOUND'||data.error.code===404)
+      const code = data.error.code;
+      const status = data.error.status || '';
+      const msg = data.error.message || '';
+      if(status==='NOT_FOUND' || code===404)
         return runWith(key,'gemini-2.0-flash',parts,{b,m,y,km,memo,obd});
-      alert('API 오류: '+data.error.message); return;
+      if(code===429 || msg.includes('quota') || msg.includes('RESOURCE_EXHAUSTED'))
+        showErrorCard('⚠️ API 사용 한도 초과', '무료 티어 한도가 소진됐습니다.\naistudio.google.com에서 결제를 연결하거나\n내일 다시 시도해주세요.');
+      else if(code===400 || msg.includes('API_KEY') || msg.includes('invalid'))
+        showErrorCard('🔑 API 키 오류', 'API 키가 잘못됐거나 만료됐습니다.\naistudio.google.com/app/apikey에서\n새 키를 발급해주세요.');
+      else
+        showErrorCard('API 오류', msg);
+      return;
     }
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    if(!raw) throw new Error('빈 응답. 다시 시도해주세요.');
+    if(!raw) { clearInterval(iv); ov.classList.remove('show'); showErrorCard('빈 응답', '분석 결과가 없습니다. 다시 시도해주세요.'); return; }
     renderResult(safeParseJSON(raw), {b,m,y,km,memo,obd});
   }catch(err){
     clearInterval(iv); ov.classList.remove('show');
-    alert('진단 오류: '+err.message);
+    if(err.message.includes('Failed to fetch') || err.message.includes('NetworkError'))
+      showErrorCard('🌐 네트워크 오류', '인터넷 연결을 확인하고 다시 시도해주세요.');
+    else
+      showErrorCard('진단 오류', err.message);
   }
 }
 
@@ -735,12 +802,20 @@ async function runWith(key, model, parts, info){
     });
     const data = await res.json();
     ov.classList.remove('show');
-    if(data.error){ alert('API 오류: '+data.error.message); return; }
+    if(data.error){
+      const code = data.error.code;
+      const msg = data.error.message || '';
+      if(code===429 || msg.includes('quota'))
+        showErrorCard('⚠️ API 사용 한도 초과', '무료 티어 한도가 소진됐습니다.\naistudio.google.com에서 결제를 연결해주세요.');
+      else
+        showErrorCard('API 오류', msg);
+      return;
+    }
     const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     renderResult(safeParseJSON(raw), info);
   }catch(err){
     ov.classList.remove('show');
-    alert('진단 오류: '+err.message);
+    showErrorCard('진단 오류', err.message);
   }
 }
 
@@ -795,11 +870,11 @@ function renderResult(r, i){
       const sev = sevMap[item.severity] || sevMap['caution'];
       h += `<div class="diag-item">
         <div class="diag-head">
-          <span class="diag-area">${item.area}</span>
+          <span class="diag-area">${esc(item.area||'')}</span>
           <span class="badge ${sev.badge}">${sev.label}</span>
         </div>
-        <div class="diag-body">${item.finding}</div>
-        ${item.action ? `<div class="diag-action">→ ${item.action}</div>` : ''}
+        <div class="diag-body">${esc(item.finding||'')}</div>
+        ${item.action ? `<div class="diag-action">→ ${esc(item.action)}</div>` : ''}
       </div>`;
     });
     document.getElementById('diagList').innerHTML = h;
@@ -813,10 +888,10 @@ function renderResult(r, i){
     let h = '';
     codes.forEach(c => {
       h += `<div class="obd-row">
-        <span class="obd-code">${c.code}</span>
+        <span class="obd-code">${esc(c.code||'')}</span>
         <div class="obd-desc">
-          <div style="font-weight:600;margin-bottom:2px;">${c.description}</div>
-          <div style="color:var(--muted);">${c.cause || ''}</div>
+          <div style="font-weight:600;margin-bottom:2px;">${esc(c.description||'')}</div>
+          <div style="color:var(--muted);">${esc(c.cause||'')}</div>
         </div>
         <span class="badge ${sevMap2[c.severity]||'badge-amber'}" style="margin-left:4px;">${c.severity==='urgent'?'위험':c.severity==='caution'?'주의':'정보'}</span>
       </div>`;
@@ -829,7 +904,7 @@ function renderResult(r, i){
   const urgent = r.urgent_actions || [];
   if(urgent.length){
     let h = '<ul style="padding-left:16px;">';
-    urgent.forEach(u => h += `<li style="font-size:13px;padding:4px 0;color:var(--red);">${u}</li>`);
+    urgent.forEach(u => h += `<li style="font-size:13px;padding:4px 0;color:var(--red);">${esc(u)}</li>`);
     h += '</ul>';
     document.getElementById('urgentList').innerHTML = h;
     document.getElementById('urgentCard').style.display = 'block';
@@ -839,7 +914,7 @@ function renderResult(r, i){
   const services = r.recommended_services || [];
   if(services.length){
     let h = '<ul style="padding-left:16px;">';
-    services.forEach(s => h += `<li style="font-size:13px;padding:4px 0;color:var(--text);">${s}</li>`);
+    services.forEach(s => h += `<li style="font-size:13px;padding:4px 0;color:var(--text);">${esc(s)}</li>`);
     h += '</ul>';
     document.getElementById('serviceList').innerHTML = h;
     document.getElementById('serviceCard').style.display = 'block';
@@ -869,10 +944,123 @@ function resetAll(){
   goTo(1);
 }
 
+// ── 공유 기능 ──
+
+// 진단 결과 텍스트 추출
+function getResultText(){
+  const car = document.getElementById('rCar').textContent;
+  const title = document.getElementById('rTitle').textContent;
+  const summary = document.getElementById('summaryText').textContent;
+
+  let text = `[DiCar 차량 진단 결과]\n`;
+  text += `차량: ${car}\n`;
+  text += `종합: ${title}\n\n`;
+  if(summary) text += `📋 AI 소견\n${summary}\n\n`;
+
+  // 즉시 조치 항목
+  const urgentCard = document.getElementById('urgentCard');
+  if(urgentCard.style.display !== 'none'){
+    const items = urgentCard.querySelectorAll('li');
+    if(items.length){
+      text += `⚠️ 즉시 조치 필요\n`;
+      items.forEach(li => text += `· ${li.textContent}\n`);
+      text += '\n';
+    }
+  }
+
+  // 부위별 진단
+  const diagCard = document.getElementById('diagCard');
+  if(diagCard.style.display !== 'none'){
+    const diags = diagCard.querySelectorAll('.diag-item');
+    if(diags.length){
+      text += `🔍 부위별 진단\n`;
+      diags.forEach(d => {
+        const area = d.querySelector('.diag-area')?.textContent || '';
+        const badge = d.querySelector('.badge')?.textContent || '';
+        const finding = d.querySelector('.diag-body')?.textContent || '';
+        text += `[${badge}] ${area}: ${finding}\n`;
+      });
+      text += '\n';
+    }
+  }
+
+  text += `※ AI 진단 결과는 참고용입니다.`;
+  return text;
+}
+
+// 카카오톡 공유
+function shareKakao(){
+  const text = getResultText();
+  const car = document.getElementById('rCar').textContent;
+  const title = document.getElementById('rTitle').textContent;
+
+  // 카카오 SDK가 없으면 Web Share API 또는 링크 복사로 fallback
+  if(navigator.share){
+    navigator.share({
+      title: `DiCar 차량 진단 - ${car}`,
+      text: text,
+      url: 'https://stonbriend.github.io/dica'
+    }).catch(() => {});
+  } else {
+    // 카카오톡 앱 URL 스킴 시도
+    const kakaoUrl = `kakaolink://send?text=${encodeURIComponent(text.substring(0, 500))}`;
+    const link = document.createElement('a');
+    link.href = kakaoUrl;
+    link.click();
+    setTimeout(() => {
+      // 앱이 없으면 클립보드 복사
+      navigator.clipboard.writeText(text).then(() => {
+        showToast('카카오톡 앱이 없어 클립보드에 복사됐습니다. 직접 붙여넣기 하세요.');
+      }).catch(() => showToast('텍스트를 복사해서 카카오톡에 붙여넣으세요.'));
+    }, 500);
+  }
+}
+
+// PDF 저장 (브라우저 인쇄)
+function savePDF(){
+  showToast('인쇄 화면에서 PDF로 저장을 선택하세요.');
+  setTimeout(() => window.print(), 600);
+}
+
+// 클립보드 복사
+function copyResult(){
+  const text = getResultText();
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('진단 결과가 복사됐습니다. 카카오톡에 붙여넣기 하세요.');
+    }).catch(() => fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try{ document.execCommand('copy'); showToast('복사됐습니다!'); }
+  catch(e){ showToast('복사 실패. 직접 선택해서 복사해주세요.'); }
+  document.body.removeChild(ta);
+}
+
 function showToast(msg){
   const t = document.getElementById('toast');
   t.textContent = msg; t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function showErrorCard(title, msg){
+  const card = document.getElementById('errorCard');
+  document.getElementById('errorTitle').textContent = title;
+  document.getElementById('errorMsg').textContent = msg;
+  card.style.display = 'block';
+  card.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function hideErrorCard(){
+  document.getElementById('errorCard').style.display = 'none';
 }
 
 init();
